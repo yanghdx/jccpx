@@ -1,0 +1,20 @@
+/target
+/mvn.workspace
+/.settings
+/.classpath
+/.project
+/output
+
+*.bak
+*.class
+*.tmp
+*.log
+*.log.*
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+.
