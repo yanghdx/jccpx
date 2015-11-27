@@ -19,6 +19,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.druid.DruidStatViewHandler;
 import com.jfinal.plugin.druid.IDruidStatViewAuth;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.render.ViewType;
 import com.venustech.jccp.doclibs.controller.AdminController;
 import com.venustech.jccp.doclibs.controller.DocController;
@@ -116,6 +117,9 @@ public class WebConfig extends JFinalConfig {
 		arp.addMapping("menu", Menu.class);
 		
 		me.add(arp);
+		
+		//ehcache
+		me.add(new EhCachePlugin());
 		
 	}
 

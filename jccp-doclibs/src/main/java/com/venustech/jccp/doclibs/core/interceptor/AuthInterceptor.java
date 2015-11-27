@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
-import com.venustech.jccp.doclibs.core.WebConst;
+import com.jfinal.plugin.ehcache.CacheKit;
 import com.venustech.jccp.doclibs.core.online.OnlineUser;
 import com.venustech.jccp.doclibs.util.HttpHelper;
 
@@ -26,8 +26,7 @@ public class AuthInterceptor implements Interceptor {
 			inv.invoke();
 		} else {
 			final HttpSession session = controller.getSession();
-			final OnlineUser user = (OnlineUser) session
-					.getAttribute(WebConst.UserConst.ONLINE);
+			final OnlineUser user = CacheKit.get("onlineUser", session.getId());
 			if (user == null) {
 				if (HttpHelper.isAjax(request)) {
 					final Map<String, String> result = new HashMap<String, String>(8);

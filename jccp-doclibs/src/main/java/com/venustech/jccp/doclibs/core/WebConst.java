@@ -9,6 +9,9 @@ package com.venustech.jccp.doclibs.core;
  */
 public interface WebConst {
 
+	interface PageConst {
+		int PAGE_SIZE = 15;
+	}
 	
 	interface UserConst {
 		final String ADMIN  = "admin";

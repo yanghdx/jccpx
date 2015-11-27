@@ -9,4 +9,5 @@ public class Admin extends Model<Admin> {
 	 */
 	private static final long serialVersionUID = 1411972028717989427L;
 
+	public static final Admin me = new Admin();
 }
