@@ -60,7 +60,7 @@ public class ExceptionInterceptor implements Interceptor {
 	 * @return
 	 */
 	private String getExceptionMsg(Exception ex) {
-		Res res = I18n.use("errors");
+		Res res = I18n.use();
 		if (ex == null) {
 			return res.get("commonError");
 		} else if (ex instanceof BusinessException) {

@@ -1,5 +1,7 @@
 /target
 /mvn.workspace
+/jee.workspace
+/*.workspace
 /.settings
 /.classpath
 /.project

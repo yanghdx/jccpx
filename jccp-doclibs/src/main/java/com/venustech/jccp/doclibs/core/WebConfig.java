@@ -12,6 +12,7 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.i18n.I18nInterceptor;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -49,7 +50,7 @@ public class WebConfig extends JFinalConfig {
 	
 	@Override
 	public void afterJFinalStart() {
-		logger.info("Web is started!");
+		logger.info("Web is started...");
 		String root = PathKit.getWebRootPath();
 		logger.info("Web root path is " + root);
 	}
@@ -69,8 +70,8 @@ public class WebConfig extends JFinalConfig {
 		me.setError404View("/404.html");
 		me.setError500View("/500.html");
 		me.setBaseViewPath("/views/");
-		me.setI18nDefaultBaseName("global");
-		me.setI18nDefaultLocale(pro.get("language", "zh-Hans"));
+		me.setI18nDefaultBaseName("res");
+		me.setI18nDefaultLocale(pro.get("language"));
 		
 	}
 
@@ -90,6 +91,7 @@ public class WebConfig extends JFinalConfig {
 
 	@Override
 	public void configInterceptor(Interceptors me) {
+		me.add(new I18nInterceptor());
 		me.add(new AuthInterceptor());
 		me.add(new ExceptionInterceptor());
 	}

@@ -1,0 +1,107 @@
+<#include "/views/common/layout.html" />
+
+<@layout>
+<!-- BEGIN LOGIN SECTION -->
+
+	<section class="section-account">
+		<div class="img-backdrop"
+			style="background-image: url('/ui/img/img16.jpg')"></div>
+		<div class="spacer"></div>
+		<div class="card contain-sm style-transparent">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<br /> <span class="text-lg text-bold text-primary">系统登录
+						</span> <br /> <br />
+						<form class="form floating-label"
+							accept-charset="utf-8" method="post">
+							<div class="form-group">
+								<input type="text" class="form-control" id="username"
+									name="username"> <label for="username">用户名</label>
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control" id="password"
+									name="password"> <label for="password">密码</label>
+								<p class="help-block">
+									<a href="#">忘记密码?</a>
+								</p>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-xs-6 text-left">
+									<div class="checkbox checkbox-inline checkbox-styled">
+										<label> <input type="checkbox"> <span>记住我</span>
+										</label>
+									</div>
+								</div>
+								<!--end .col -->
+								<div class="col-xs-6 text-right">
+									<button class="btn btn-primary btn-raised" type="button" id="submit-btn">登录</button>
+								</div>
+								<!--end .col -->
+							</div>
+							<!--end .row -->
+							
+						</form>
+					</div>
+					<!--end .col -->
+					<div class="col-sm-5 col-sm-offset-1 text-center" style="display:none;">
+						<br> <br>
+						<h3 class="text-light">No account yet?</h3>
+						<a class="btn btn-block btn-raised btn-primary" href="#">Sign
+							up here</a> <br> <br>
+						<h3 class="text-light">or</h3>
+						<p>
+							<a href="#" class="btn btn-block btn-raised btn-info"><i
+								class="fa fa-facebook pull-left"></i>Login with Facebook</a>
+						</p>
+						<p>
+							<a href="#" class="btn btn-block btn-raised btn-info"><i
+								class="fa fa-twitter pull-left"></i>Login with Twitter</a>
+						</p>
+					</div>
+					<!--end .col -->
+				</div>
+				<!--end .row -->
+			</div>
+			<!--end .card-body -->
+		</div>
+		<!--end .card -->
+	</section>
+	<form class="form-hidden" id="hidden-form" action="/login/login" method="post">
+		<input type="hidden" value="" name="user" id="user">
+		<input type="hidden" value="" name="pass" id="pass">
+		<input type="hidden" name="loginToken" id="loginToken" value="${loginToken}">
+	</form>
+	<input type="hidden" value="${errmsg!}" id="errmsg">
+	<#include "/views/common/common-js.html" />
+	<script src="/ui/js/spin.min.js"></script>
+	<script src="/ui/demo/Demo.js"></script>
+	<script src="/jquery/jquery.md5.js"></script>
+	<script>
+	$(function() {
+		var msg = $.trim($("#errmsg").val());
+		if (msg) {
+			alert(msg);
+		}
+	});
+	$("#submit-btn").click(function() {
+			var user = $.trim($("#username").val());
+			if (!user) {
+				alert("用户名不能为空");
+				return;
+			}
+			var pass = $.trim($("#password").val());
+			if (!pass) {
+				alert("密码不能为空");
+				return;
+			}
+			var newpass = $.md5($.md5($.md5(pass) + user) + $("#loginToken").val());
+			//alert(newpass);
+			$("#user").val(user);
+			$("#pass").val(newpass);
+			$("#hidden-form").submit();
+			
+		});
+	</script>
+</@layout>
