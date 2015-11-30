@@ -1,0 +1,59 @@
+<div id="menubar" class="menubar-inverse  animate">
+	<div class="menubar-fixed-panel">
+		<div>
+			<a class="btn btn-icon-toggle btn-default menubar-toggle"
+				data-toggle="menubar" href="javascript:void(0);"> <i
+				class="fa fa-bars"></i>
+			</a>
+		</div>
+		<div class="expanded">
+			<a href="/home"> <span
+				class="text-lg text-bold text-primary ">检测产品资料库</span>
+			</a>
+		</div>
+	</div>
+	<div class="nano has-scrollbar" style="height: 579px;">
+		<div class="nano-content" tabindex="0" style="right: -17px;">
+			<div class="menubar-scroll-panel" style="padding-bottom: 33px;">
+
+				<!-- BEGIN MAIN MENU -->
+				<ul id="main-menu" class="gui-controls">
+	
+					<!-- BEGIN LEVELS -->
+					<#list menuList as m>
+					<li class="gui-folder"><a>
+							<div class="gui-icon">
+								<i class="fa fa-folder-open fa-fw"></i>
+							</div> <span class="title">${m.menuName}</span>
+					</a> <!--start submenu -->
+						<ul>
+							<#list m.getChildren() as c>
+							<li><a href="javascript:loadMenu(${m.menuId}, ${c.menuId});"><span class="title">${c.menuName}</span></a></li>
+							</#list>
+						</ul>
+					</li>
+					</#list>
+					<!-- END LEVELS -->
+				</ul>
+				<!--end .main-menu -->
+				<!-- END MAIN MENU -->
+
+				<div class="menubar-foot-panel">
+					<small class="no-linebreak hidden-folded"> <span
+						class="opacity-75">Copyright © 2015</span> <strong>jccp</strong>
+					</small>
+				</div>
+			</div>
+		</div>
+		<div class="nano-pane" style="display: none;">
+			<div class="nano-slider"
+				style="height: 562px; transform: translate(0px, 0px);"></div>
+		</div>
+	</div>
+	<!--end .menubar-scroll-panel-->
+</div>
+<script>
+function loadMenu(menuId, docTypeId) {
+	//todo
+}
+</script>

@@ -21,7 +21,8 @@ public class DocController extends Controller {
 	
 	
 	public void page() {
-		Page<Doc> page = docService.find(getParaToInt(0, 1), getParaToInt(1, PageConst.PAGE_SIZE));
+		Page<Doc> page = docService.find("", getParaToInt(0,1), getParaToInt(1,1),
+				getParaToInt(2, 1), getParaToInt(3, PageConst.PAGE_SIZE));
 		renderJson(page);
 	}
 	

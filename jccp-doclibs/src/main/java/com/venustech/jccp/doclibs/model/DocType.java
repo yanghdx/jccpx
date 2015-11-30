@@ -8,5 +8,7 @@ public class DocType extends Model<DocType> {
 	 * 
 	 */
 	private static final long serialVersionUID = -2361074620181605304L;
+	
+	public static final DocType me = new DocType();
 
 }

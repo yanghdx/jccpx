@@ -27,9 +27,9 @@ public class DocService {
 		return Db.deleteById("doc", id);
 	}
 	
-	public Page<Doc> find(int pageNumber, int pageSize) {
+	public Page<Doc> find(String docName, int menuId, int docTypeId, int pageNumber, int pageSize) {
 		return Doc.me.paginate(pageNumber, pageSize, 
-				"select * ", "from doc order by create_time desc");
+				"select * ", "from doc d where d.menu_id=? and d.type_id=? order by create_time desc", menuId, docTypeId);
 	}
 	
 }

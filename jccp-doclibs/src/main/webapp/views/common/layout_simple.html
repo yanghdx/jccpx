@@ -1,5 +1,4 @@
-<#macro layout_head>
-<!DOCTYPE html>
+<#macro layout_simple>
 <html lang="zh">
 	<head>
 		<title>检测产品资料库</title>
@@ -24,26 +23,9 @@
 		<script type="text/javascript" src="/ui/js/utils/html5shiv.js"></script>
 		<script type="text/javascript" src="/ui/js/utils/respond.min.js"></script>
 		<![endif]-->
-		<#nested>
-</#macro>
-
-<#macro layout_body>
 	</head>
 	
 	<body class="menubar-hoverable header-fixed ">
-		<#include "/views/common/header.html" />
-		<div id="base">
-			<div class="offcanvas"></div>
-			<div id="content">
-				<#nested>
-			</div>
-			<#include "/views/common/menubar.html" />
-			<div class="offcanvas"></div>
-		</div>
-</#macro>
-
-<#macro layout_js>
-		<#include "/views/common/common-js.html" />
 		<#nested>
 	</body>
 </html>

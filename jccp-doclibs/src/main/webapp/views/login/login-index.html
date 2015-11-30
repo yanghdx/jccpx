@@ -1,6 +1,6 @@
-<#include "/views/common/layout.html" />
+<#include "/views/common/layout_simple.html" />
 
-<@layout>
+<@layout_simple>
 <!-- BEGIN LOGIN SECTION -->
 
 	<section class="section-account">
@@ -22,14 +22,14 @@
 							<div class="form-group">
 								<input type="password" class="form-control" id="password"
 									name="password"> <label for="password">密码</label>
-								<p class="help-block">
+								<p class="help-block" style="display:none;">
 									<a href="#">忘记密码?</a>
 								</p>
 							</div>
 							<br />
 							<div class="row">
 								<div class="col-xs-6 text-left">
-									<div class="checkbox checkbox-inline checkbox-styled">
+									<div class="checkbox checkbox-inline checkbox-styled" style="display:none;">
 										<label> <input type="checkbox"> <span>记住我</span>
 										</label>
 									</div>
@@ -75,7 +75,6 @@
 	</form>
 	<input type="hidden" value="${errmsg!}" id="errmsg">
 	<#include "/views/common/common-js.html" />
-	<script src="/ui/js/spin.min.js"></script>
 	<script src="/ui/demo/Demo.js"></script>
 	<script src="/jquery/jquery.md5.js"></script>
 	<script>
@@ -104,4 +103,4 @@
 			
 		});
 	</script>
-</@layout>
+</@layout_simple>

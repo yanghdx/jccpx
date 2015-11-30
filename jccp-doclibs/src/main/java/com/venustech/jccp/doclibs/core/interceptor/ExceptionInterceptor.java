@@ -62,29 +62,29 @@ public class ExceptionInterceptor implements Interceptor {
 	private String getExceptionMsg(Exception ex) {
 		Res res = I18n.use();
 		if (ex == null) {
-			return res.get("commonError");
+			return res.get("error.common");
 		} else if (ex instanceof BusinessException) {
 			return ex.getMessage();
 		} else if (ex instanceof IllegalArgumentException) {
-			return res.get("calcError");
+			return res.get("error.para");
 		} else if (ex instanceof SQLException) {
-			return res.get("dbAccessError");
+			return res.get("error.db.access");
 		} else if (ex instanceof IOException) {
-			return res.get("ioError");
+			return res.get("error.io");
 		} else if (ex instanceof ArithmeticException) {
-			return res.get("calcError");
+			return res.get("error.calc");
 		} 
 		//else if (ex instanceof MaxUploadSizeExceededException) {
 		//	errmsg = "上传文件大小超过限制";
 		//} 
 		else if (ex instanceof FileNotFoundException ) {
-			return res.get("fileNotFoundError");
+			return res.get("error.file.not.found");
 		} else if (ex instanceof ArrayIndexOutOfBoundsException ) {
-			return res.get("indexError");
+			return res.get("error.index");
 		} else if (ex instanceof SecurityException) {
-			return res.get("securityError");
+			return res.get("error.security");
 		} else {
-			return res.get("commonError");
+			return res.get("error.common");
 		}
 		
 	}
