@@ -19,6 +19,8 @@ public class MenuBean implements Serializable {
 	
 	private String menuName;
 	
+	private String funcUrl;
+	
 	private List<MenuBean> children;
 
 	public int getMenuId() {
@@ -35,6 +37,14 @@ public class MenuBean implements Serializable {
 
 	public void setMenuName(String menuName) {
 		this.menuName = menuName;
+	}
+
+	public String getFuncUrl() {
+		return funcUrl;
+	}
+
+	public void setFuncUrl(String funcUrl) {
+		this.funcUrl = funcUrl;
 	}
 
 	public List<MenuBean> getChildren() {

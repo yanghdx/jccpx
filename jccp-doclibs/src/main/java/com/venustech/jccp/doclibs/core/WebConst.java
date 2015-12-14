@@ -40,4 +40,10 @@ public interface WebConst {
 		int COMMON_MENU = 0;
 		int ADMIN_MENU  = 1;
 	}
+	
+	interface CacheKey {
+		String ONLINE_USERS = "onlineUsers";
+		String USERS        = "users";
+		String MENUS        = "menus";
+	}
 }

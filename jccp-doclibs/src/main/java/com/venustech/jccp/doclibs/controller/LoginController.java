@@ -6,6 +6,7 @@ import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HashKit;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.venustech.jccp.doclibs.controller.validator.LoginValidator;
+import com.venustech.jccp.doclibs.core.WebConst;
 import com.venustech.jccp.doclibs.core.online.OnlineUser;
 import com.venustech.jccp.doclibs.model.Admin;
 import com.venustech.jccp.doclibs.service.AdminService;
@@ -16,8 +17,13 @@ public class LoginController extends Controller {
 	private AdminService adminService = enhance(AdminService.class);
 	
 	public void index() {
-		createToken("loginToken");
-		render("login-index.html");
+		if (CacheKit.get(WebConst.CacheKey.ONLINE_USERS, getSession().getId()) != null) {
+			redirect("/admin");
+		} else {
+			createToken("loginToken");
+			render("login-index.html");
+		}
+
 	}
 	
 	@Before(LoginValidator.class)
@@ -51,7 +57,7 @@ public class LoginController extends Controller {
 		onlineUser.setEmail(admin.getStr("email"));
 		onlineUser.setSessionId(sessionId);
 		//放入缓存
-		CacheKit.put("onlineUsers", sessionId, onlineUser);
+		CacheKit.put(WebConst.CacheKey.ONLINE_USERS, sessionId, onlineUser);
 		
 		redirect("/admin");
 		

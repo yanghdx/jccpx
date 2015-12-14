@@ -35,6 +35,7 @@ public class MenuService {
 				MenuBean mb = new MenuBean();
 				mb.setMenuId(m.getInt("id"));
 				mb.setMenuName(m.getStr("menu_name"));
+				mb.setFuncUrl("");
 				mb.setChildren(new ArrayList<MenuBean>());
 				
 				final List<Record> docTypes = Db.find(sql, mb.getMenuId());
@@ -43,6 +44,7 @@ public class MenuService {
 						MenuBean c = new MenuBean();
 						c.setMenuId(r.getInt("id"));
 						c.setMenuName(r.getStr("type_name"));
+						mb.setFuncUrl("");
 						mb.getChildren().add(c);
 					}
 				}
@@ -68,6 +70,7 @@ public class MenuService {
 					MenuBean mb = new MenuBean();
 					mb.setMenuId(menu.getInt("id"));
 					mb.setMenuName(menu.getStr("menu_name"));
+					mb.setFuncUrl("");
 					mb.setChildren(new ArrayList<MenuBean>());
 					result.add(mb);
 				}
@@ -79,6 +82,7 @@ public class MenuService {
 					MenuBean mb = new MenuBean();
 					mb.setMenuId(menu2.getInt("id"));
 					mb.setMenuName(menu2.getStr("menu_name"));
+					mb.setFuncUrl(menu2.getStr("func_url"));
 					for (MenuBean _mb : result) {
 						if (_mb.getMenuId() == parentId) {
 							_mb.getChildren().add(mb);

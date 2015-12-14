@@ -20,7 +20,7 @@
 				<ul id="main-menu" class="gui-controls">
 	
 					<!-- BEGIN LEVELS -->
-					<#list menuList as m>
+					<#list leftMenuList as m>
 					<li class="gui-folder"><a>
 							<div class="gui-icon">
 								<i class="fa fa-folder-open fa-fw"></i>
@@ -28,7 +28,7 @@
 					</a> <!--start submenu -->
 						<ul>
 							<#list m.getChildren() as c>
-							<li><a href="javascript:loadMenu(${m.menuId}, ${c.menuId});"><span class="title">${c.menuName}</span></a></li>
+							<li><a href="javascript:loadMenu(${m.menuId}, ${c.menuId}, '${c.funcUrl!}');"><span class="title">${c.menuName}</span></a></li>
 							</#list>
 						</ul>
 					</li>
@@ -53,7 +53,11 @@
 	<!--end .menubar-scroll-panel-->
 </div>
 <script>
-function loadMenu(menuId, docTypeId) {
-	//todo
+function loadMenu(menuId, docTypeId, funcUrl) {
+	if (funcUrl) {
+		window.location.href = funcUrl;
+	} else {
+		window.location.href = '/doc/docs/' + menuId + '-' + docTypeId;
+	}
 }
 </script>

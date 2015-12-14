@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql_137
-Source Server Version : 50522
-Source Host           : 192.168.54.137:3306
+Source Server         : 127.0.0.1
+Source Server Version : 50624
+Source Host           : localhost:3306
 Source Database       : jccp_doclibs
 
 Target Server Type    : MYSQL
-Target Server Version : 50522
+Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2015-12-14 17:46:51
+Date: 2015-12-14 23:14:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -104,20 +104,21 @@ CREATE TABLE `menu` (
   `visible` int(1) NOT NULL DEFAULT '1',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `menu_type` int(1) NOT NULL DEFAULT '0' COMMENT '0为前台menu、1为管理员menu',
+  `func_url` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('1', '文档库', '1', '1', '0', '0');
-INSERT INTO `menu` VALUES ('2', '知识库', '2', '1', '0', '0');
-INSERT INTO `menu` VALUES ('3', '在线API', '3', '1', '0', '0');
-INSERT INTO `menu` VALUES ('4', 'UI模板', '4', '1', '0', '0');
-INSERT INTO `menu` VALUES ('5', '常用资料', '5', '1', '0', '0');
-INSERT INTO `menu` VALUES ('6', '系统管理', '1', '1', '0', '1');
-INSERT INTO `menu` VALUES ('7', '上传文档', '2', '1', '6', '1');
-INSERT INTO `menu` VALUES ('8', '文档列表', '3', '1', '6', '1');
+INSERT INTO `menu` VALUES ('1', '文档库', '1', '1', '0', '0', '');
+INSERT INTO `menu` VALUES ('2', '知识库', '2', '1', '0', '0', '');
+INSERT INTO `menu` VALUES ('3', '在线API', '3', '1', '0', '0', '');
+INSERT INTO `menu` VALUES ('4', 'UI模板', '4', '1', '0', '0', '');
+INSERT INTO `menu` VALUES ('5', '常用资料', '5', '1', '0', '0', '');
+INSERT INTO `menu` VALUES ('6', '系统管理', '1', '1', '0', '1', '');
+INSERT INTO `menu` VALUES ('7', '上传文档', '2', '1', '6', '1', '/admin/docAdd');
+INSERT INTO `menu` VALUES ('8', '文档列表', '3', '1', '6', '1', '/admin/docs');
 
 -- ----------------------------
 -- Table structure for menu_doc_type

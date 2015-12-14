@@ -1,0 +1,65 @@
+<#include "/views/common/layout.html" /> <@layout_head> </@layout_head>
+
+<@layout_body>
+<section>
+	<div class="section-header">
+		<ol class="breadcrumb">
+			<li class="active">上传文档</li>
+		</ol>
+	</div>
+	<div class="section-body contain-lg">
+
+		<div class="card">
+			<div class="card-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="placeholder13" class="col-sm-2 control-label">文档名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="placeholder13">
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-sm-2 control-label">选择文件</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="placeholder13">
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="select13" class="col-sm-2 control-label">文档分类</label>
+						<div class="col-sm-10">
+							<select id="select13" name="select13" class="form-control">
+								<#list menus as m>
+									<option value="${m.menuId}">${m.menuName}</option>
+								</#list>
+							</select>
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="select13" class="col-sm-2 control-label"></label>
+						<div class="col-sm-10">
+							<select id="select13" name="select13" class="form-control">
+								
+							</select>
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="textarea13" class="col-sm-2 control-label">说明</label>
+						<div class="col-sm-10">
+							<textarea name="textarea13" id="textarea13" class="form-control"
+								rows="3" placeholder=""></textarea>
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+</section>
+</@layout_body> <@layout_js> </@layout_js>
