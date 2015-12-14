@@ -51,7 +51,7 @@ public class LoginController extends Controller {
 		onlineUser.setEmail(admin.getStr("email"));
 		onlineUser.setSessionId(sessionId);
 		//放入缓存
-		CacheKit.put("onlineUser", sessionId, onlineUser);
+		CacheKit.put("onlineUsers", sessionId, onlineUser);
 		
 		redirect("/admin");
 		

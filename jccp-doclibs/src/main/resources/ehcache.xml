@@ -16,7 +16,7 @@
 
 	<!-- online cache -->
     <cache
-    	   name="onlineUser"
+    	   name="onlineUsers"
            maxEntriesLocalHeap="1000"
            eternal="false" 
            overflowToDisk="true"
@@ -25,7 +25,7 @@
     </cache>
     
     <cache
-    	   name="userList"
+    	   name="users"
            maxEntriesLocalHeap="1000"
            eternal="false"
            overflowToDisk="true"
@@ -34,7 +34,7 @@
     </cache>
     <!-- menu永不过期 -->
     <cache
-    	   name="menuList"
+    	   name="menus"
            maxEntriesLocalHeap="20"
            eternal="true"
            overflowToDisk="true"

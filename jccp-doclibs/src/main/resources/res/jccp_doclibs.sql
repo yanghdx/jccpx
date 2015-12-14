@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2015-11-30 19:13:42
+Date: 2015-12-14 17:46:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ CREATE TABLE `doc_tag` (
   `tag_order` int(3) NOT NULL DEFAULT '0',
   `type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of doc_tag
@@ -103,17 +103,21 @@ CREATE TABLE `menu` (
   `menu_order` int(3) NOT NULL,
   `visible` int(1) NOT NULL DEFAULT '1',
   `parent_id` int(11) NOT NULL DEFAULT '0',
+  `menu_type` int(1) NOT NULL DEFAULT '0' COMMENT '0为前台menu、1为管理员menu',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('1', '文档库', '1', '1', '0');
-INSERT INTO `menu` VALUES ('2', '知识库', '2', '1', '0');
-INSERT INTO `menu` VALUES ('3', '在线API', '3', '1', '0');
-INSERT INTO `menu` VALUES ('4', 'UI模板', '4', '1', '0');
-INSERT INTO `menu` VALUES ('5', '常用资料', '5', '1', '0');
+INSERT INTO `menu` VALUES ('1', '文档库', '1', '1', '0', '0');
+INSERT INTO `menu` VALUES ('2', '知识库', '2', '1', '0', '0');
+INSERT INTO `menu` VALUES ('3', '在线API', '3', '1', '0', '0');
+INSERT INTO `menu` VALUES ('4', 'UI模板', '4', '1', '0', '0');
+INSERT INTO `menu` VALUES ('5', '常用资料', '5', '1', '0', '0');
+INSERT INTO `menu` VALUES ('6', '系统管理', '1', '1', '0', '1');
+INSERT INTO `menu` VALUES ('7', '上传文档', '2', '1', '6', '1');
+INSERT INTO `menu` VALUES ('8', '文档列表', '3', '1', '6', '1');
 
 -- ----------------------------
 -- Table structure for menu_doc_type
@@ -125,7 +129,7 @@ CREATE TABLE `menu_doc_type` (
   `type_id` int(11) NOT NULL,
   `type_order` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu_doc_type

@@ -22,11 +22,11 @@ public class AuthInterceptor implements Interceptor {
 	public void intercept(Invocation inv) {
 		final Controller controller = inv.getController();
 		final HttpServletRequest request = controller.getRequest();
-		if (!request.getRequestURI().startsWith("/admin/")) {
+		if (!request.getRequestURI().startsWith("/admin")) {
 			inv.invoke();
 		} else {
 			final HttpSession session = controller.getSession();
-			final OnlineUser user = CacheKit.get("onlineUser", session.getId());
+			final OnlineUser user = CacheKit.get("onlineUsers", session.getId());
 			if (user == null) {
 				if (HttpHelper.isAjax(request)) {
 					final Map<String, String> result = new HashMap<String, String>(8);
@@ -35,7 +35,7 @@ public class AuthInterceptor implements Interceptor {
 					result.put("msg", "No access");
 					controller.renderJson(result);
 				} else {
-					controller.redirect("/index");
+					controller.redirect("/login");
 				}
 			} else {
 				inv.invoke();

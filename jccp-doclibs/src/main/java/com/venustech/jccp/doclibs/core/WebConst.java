@@ -35,4 +35,9 @@ public interface WebConst {
 		final String ON  = "1";
 		final String OFF = "0";
 	}
+	
+	interface MenuType {
+		int COMMON_MENU = 0;
+		int ADMIN_MENU  = 1;
+	}
 }

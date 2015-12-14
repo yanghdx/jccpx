@@ -10,18 +10,18 @@ import com.venustech.jccp.doclibs.service.MenuService;
 import com.venustech.jccp.doclibs.vo.MenuBean;
 
 /**
- * 用于加载menu列表
+ * 用于加载系统管理员的menu列表
  * @author yanghdx
  *
  */
-public class MenuInterceptor implements Interceptor {
+public class AdminMenuInterceptor implements Interceptor {
 
 	@Override
 	public void intercept(Invocation inv) {
-		final List<MenuBean> menuList = CacheKit.get("menus", "menuList", new IDataLoader() {
+		final List<MenuBean> menuList = CacheKit.get("menus", "adminMenuList", new IDataLoader() {
 			public Object load() {
-				//加载普通menu
-				return (new MenuService()).loadMenus();
+				//加载admin menu
+				return (new MenuService()).loadAdminMenus();
 			}
 		});
 		inv.getController().setAttr("menuList", menuList);
@@ -29,4 +29,5 @@ public class MenuInterceptor implements Interceptor {
 		
 	}
 
+	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.venustech.jccp.doclibs.core.WebConst;
 import com.venustech.jccp.doclibs.model.Menu;
 import com.venustech.jccp.doclibs.vo.MenuBean;
 
@@ -15,16 +16,16 @@ import com.venustech.jccp.doclibs.vo.MenuBean;
  */
 public class MenuService {
 
-	public List<Menu> findAll() {
-		return Menu.me.find("select * from menu order by menu_order asc ");
+	public List<Menu> findByMenuType(int menuType) {
+		return Menu.me.find("select * from menu m where m.menu_type=? order by menu_order asc", menuType);
 	}
 	
 	/**
 	 * 根据菜单、文档类型生成前台的菜单
 	 * @return
 	 */
-	public List<MenuBean> getMenuBeanList() {
-		final List<Menu> menus = findAll();
+	public List<MenuBean> loadMenus() {
+		final List<Menu> menus = findByMenuType(WebConst.MenuType.COMMON_MENU);
 		final List<MenuBean> result = new ArrayList<MenuBean>();
 		if (menus != null && !menus.isEmpty()) {
 			final String sql = "select dt.id, dt.type_name from doc_type dt, menu_doc_type mdt "
@@ -49,6 +50,45 @@ public class MenuService {
 			}
 			
 		}
+		return result;
+	}
+	
+	/**
+	 * 获取系统管理员的菜单
+	 * @return
+	 */
+	public List<MenuBean> loadAdminMenus() {
+		final List<Menu> menus = this.findByMenuType(WebConst.MenuType.ADMIN_MENU);
+		final List<MenuBean> result = new ArrayList<MenuBean>();
+		//只有两级菜单
+		if (menus != null && !menus.isEmpty()) {
+			//先添加一级菜单
+			for (Menu menu : menus) {
+				if (menu.getInt("parent_id") == 0) {
+					MenuBean mb = new MenuBean();
+					mb.setMenuId(menu.getInt("id"));
+					mb.setMenuName(menu.getStr("menu_name"));
+					mb.setChildren(new ArrayList<MenuBean>());
+					result.add(mb);
+				}
+			}
+			//再添加二级
+			for (Menu menu2 : menus) {
+				int parentId = menu2.getInt("parent_id");
+				if (parentId > 0) {
+					MenuBean mb = new MenuBean();
+					mb.setMenuId(menu2.getInt("id"));
+					mb.setMenuName(menu2.getStr("menu_name"));
+					for (MenuBean _mb : result) {
+						if (_mb.getMenuId() == parentId) {
+							_mb.getChildren().add(mb);
+							break;
+						}
+					}
+				}
+			}
+		}
+		
 		return result;
 	}
 }
