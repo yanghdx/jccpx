@@ -1,5 +1,7 @@
 package com.venustech.jccp.doclibs.core;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -71,6 +73,8 @@ public class WebConfig extends JFinalConfig {
 		me.setError500View("/500.html");
 		me.setBaseViewPath("/views/");
 		me.setI18nDefaultBaseName("res");
+		me.setUploadedFileSaveDirectory(PathKit.getWebRootPath() + File.separator + WebConst.Upload.PATH);
+		me.setMaxPostSize(WebConst.Upload.FILE_MAX_SIZE);
 		me.setI18nDefaultLocale(pro.get("language"));
 		
 	}

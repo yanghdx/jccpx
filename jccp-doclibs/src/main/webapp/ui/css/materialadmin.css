@@ -2683,7 +2683,7 @@ label {
   left: 0;
 }
 .form-control-static {
-  font-size: 16px;
+  font-size: 14px;
 }
 .has-feedback label ~ .form-control-feedback,
 .form-control-feedback {
@@ -2699,7 +2699,7 @@ label {
   border-bottom-color: rgba(12, 12, 12, 0.12);
   background: transparent;
   color: #0c0c0c;
-  font-size: 16px;
+  font-size: 14px;
   -webkit-box-shadow: none;
   box-shadow: none;
 }

@@ -2,12 +2,18 @@ package com.venustech.jccp.doclibs.controller;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.i18n.I18n;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.jfinal.plugin.ehcache.IDataLoader;
+import com.jfinal.upload.UploadFile;
 import com.venustech.jccp.doclibs.controller.interceptor.AdminMenuInterceptor;
+import com.venustech.jccp.doclibs.controller.validator.DocAddValidator;
 import com.venustech.jccp.doclibs.core.WebConst;
 import com.venustech.jccp.doclibs.core.interceptor.AuthInterceptor;
+import com.venustech.jccp.doclibs.model.Doc;
+import com.venustech.jccp.doclibs.service.DocService;
 import com.venustech.jccp.doclibs.service.MenuService;
+import com.venustech.jccp.doclibs.util.DateHelper;
 
 /**
  * 后台管理员controller
@@ -17,7 +23,9 @@ import com.venustech.jccp.doclibs.service.MenuService;
 @Before({AuthInterceptor.class, AdminMenuInterceptor.class})
 public class AdminController extends Controller {
 
-
+	//docService
+	private DocService docService = enhance(DocService.class);
+	
 	/**
 	 * admin管理首页
 	 */
@@ -33,7 +41,7 @@ public class AdminController extends Controller {
 	}
 	
 	/**
-	 * admin添加doc页面
+	 * 添加doc页面
 	 */
 	public void docAdd() {
 		createToken("addToken");
@@ -44,5 +52,32 @@ public class AdminController extends Controller {
 			}
 		}));
 		render("doc-add.html");
+	}
+	
+	
+	/**
+	 * 添加doc
+	 */
+	@Before(DocAddValidator.class)
+	public void doDocAdd() {
+		UploadFile file = getFile("docFile");
+		if (file == null) {
+			setAttr("errmsg", I18n.use().format("error.empty", I18n.use().get("file.upload")));
+			render("doc-add.html");
+			return;
+		} else {
+			Doc doc = getModel(Doc.class);
+			doc.set("upload_time", DateHelper.now())
+				.set("doc_path", file.getFileName())
+				.set("visible", 1);
+			boolean result = docService.save(doc);
+			if (result) {
+				redirect("/admin/docAdd");
+			} else {
+				setAttr("errmsg", I18n.use().get("admin.add.doc.error"));
+				render("doc-add.html");
+			}
+		}
+		
 	}
 }

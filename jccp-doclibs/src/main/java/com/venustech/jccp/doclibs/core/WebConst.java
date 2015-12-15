@@ -14,26 +14,26 @@ public interface WebConst {
 	}
 	
 	interface UserConst {
-		final String ADMIN  = "admin";
-		final String USER   = "user";
-		final String LOGIN  = "login";
-		final String ONLINE = "online";
+		String ADMIN  = "admin";
+		String USER   = "user";
+		String LOGIN  = "login";
+		String ONLINE = "online";
 	}
 	
 	
 	interface ReturnConst {
-		final String RESULT  = "result";
-		final String TYPE    = "type";
-		final String CODE    = "code";
-		final String MSG     = "msg";
-		final String SUCCESS = "success";
-		final String ERROR   = "error";
+		String RESULT  = "result";
+		String TYPE    = "type";
+		String CODE    = "code";
+		String MSG     = "msg";
+		String SUCCESS = "success";
+		String ERROR   = "error";
 		
 	}
 	
 	interface ConfigConst {
-		final String ON  = "1";
-		final String OFF = "0";
+		String ON  = "1";
+		String OFF = "0";
 	}
 	
 	interface MenuType {
@@ -45,5 +45,11 @@ public interface WebConst {
 		String ONLINE_USERS = "onlineUsers";
 		String USERS        = "users";
 		String MENUS        = "menus";
+	}
+	
+	interface Upload {
+		String PATH = "upload";
+		int FILE_MAX_SIZE = 100 * 1024 * 1024;
+		
 	}
 }

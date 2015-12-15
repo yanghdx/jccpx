@@ -11,25 +11,37 @@
 
 		<div class="card">
 			<div class="card-body">
-				<form class="form-horizontal" role="form">
+				<#if errmsg?? && errmsg != "">
+				<div class="alert alert-danger" role="alert">
+					${errmsg}
+				</div>
+				</#if>
+				<#if succmsg?? && succmsg != "">
+				<div class="alert alert-danger" role="alert">
+					${succmsg}
+				</div>
+				</#if>
+				<form class="form-horizontal" role="form" method="post" 
+						action="/admin/doDocAdd" enctype="multipart/form-data">
+					<input type="hidden" value="${addToken}" name="addToken" id="addToken">
 					<div class="form-group">
-						<label for="placeholder13" class="col-sm-2 control-label">文档名称</label>
+						<label for="doc.doc_name" class="col-sm-2 control-label">文档名称</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="placeholder13">
+							<input type="text" class="form-control" id="doc.doc_name" name="doc.doc_name">
 							<div class="form-control-line"></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="placeholder13" class="col-sm-2 control-label">选择文件</label>
+						<label for="docFile" class="col-sm-2 control-label">选择文件</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="placeholder13">
+							<input type="file" class="form-control" id="docFile" name="docFile">
 							<div class="form-control-line"></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="select13" class="col-sm-2 control-label">文档分类</label>
+						<label for="doc.menu_id" class="col-sm-2 control-label">文档分类</label>
 						<div class="col-sm-10">
-							<select id="select13" name="select13" class="form-control">
+							<select id="doc.menu_id" name="doc.menu_id" class="form-control">
 								<#list menus as m>
 									<option value="${m.menuId}">${m.menuName}</option>
 								</#list>
@@ -37,23 +49,48 @@
 							<div class="form-control-line"></div>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
-						<label for="select13" class="col-sm-2 control-label"></label>
+						<label for="doc.type_id" class="col-sm-2 control-label"></label>
 						<div class="col-sm-10">
-							<select id="select13" name="select13" class="form-control">
-								
+							<select id="doc.type_id" name="doc.type_id" class="form-control">
+								<#list menus[0].getChildren() as c>
+									<option value="${c.menuId}">${c.menuName}</option>
+								</#list>
 							</select>
 							<div class="form-control-line"></div>
 						</div>
 					</div>
-
+					<script>
+						var classify = [];
+						var tmp = null, tmpc = null;
+						<#list menus as m>
+							tmpc = [];
+							<#list m.getChildren() as c>
+								tmpc.push({menuId : '${c.menuId}', menuName : '${c.menuName}'});
+							</#list>
+							tmp = {menuId : '${m.menuId}', menuName : '${m.menuName}', children : tmpc};
+							classify.push(tmp);
+						</#list>
+						
+						//console.log(classify);
+						
+					</script>
 					<div class="form-group">
-						<label for="textarea13" class="col-sm-2 control-label">说明</label>
+						<label for="description" class="col-sm-2 control-label">说明</label>
 						<div class="col-sm-10">
-							<textarea name="textarea13" id="textarea13" class="form-control"
+							<textarea name="description" id="description" class="form-control"
 								rows="3" placeholder=""></textarea>
 							<div class="form-control-line"></div>
+						</div>
+					</div>
+					
+					
+					
+					<div class="form-group">
+						<label for="" class="col-sm-2 control-label"></label>
+						<div class="col-sm-10">
+							<button type="submit" class="btn ink-reaction btn-primary">提交</button>
 						</div>
 					</div>
 				</form>
@@ -62,4 +99,27 @@
 		</div>
 	</div>
 </section>
-</@layout_body> <@layout_js> </@layout_js>
+</@layout_body> 
+<@layout_js> 
+<script>
+/**
+ * 选择文档分类
+ */
+$("#doc\\.menu_id").on("change", function(){
+	var html = [];
+	for (var i=0, len=classify.length; i<len; i++) {
+		if (this.value == classify[i].menuId) {
+			var clist = classify[i].children || [];
+			for (var j=0, len2 = clist.length; j<len2; j++) {
+				html.push('<option value="');
+				html.push(clist[j].menuId+'">');
+				html.push(clist[j].menuName);
+				html.push('</option>');
+			}
+			break;
+		}
+	}
+	$("#doc\\.type_id").html(html.join(''));
+});
+</script>
+</@layout_js>
