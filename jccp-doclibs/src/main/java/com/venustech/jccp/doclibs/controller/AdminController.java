@@ -61,22 +61,16 @@ public class AdminController extends Controller {
 	@Before(DocAddValidator.class)
 	public void doDocAdd() {
 		UploadFile file = getFile("docFile");
-		if (file == null) {
-			setAttr("errmsg", I18n.use().format("error.empty", I18n.use().get("file.upload")));
-			render("doc-add.html");
-			return;
+		Doc doc = getModel(Doc.class);
+		doc.set("upload_time", DateHelper.now())
+			.set("doc_path", file.getFileName())
+			.set("visible", 1);
+		boolean result = docService.save(doc);
+		if (result) {
+			redirect("/admin/docAdd");
 		} else {
-			Doc doc = getModel(Doc.class);
-			doc.set("upload_time", DateHelper.now())
-				.set("doc_path", file.getFileName())
-				.set("visible", 1);
-			boolean result = docService.save(doc);
-			if (result) {
-				redirect("/admin/docAdd");
-			} else {
-				setAttr("errmsg", I18n.use().get("admin.add.doc.error"));
-				render("doc-add.html");
-			}
+			setAttr("errmsg", I18n.use().get("admin.add.doc.error"));
+			render("doc-add.html");
 		}
 		
 	}

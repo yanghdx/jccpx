@@ -30,12 +30,13 @@ public class DocAddValidator extends Validator {
 	@Override
 	protected void validate(Controller c) {
 		Res res = I18n.use();
-		UploadFile file = c.getFile("docFile");
+		//验证文件
+		UploadFile file = c.getFile("docFile");//必须先调用getFile才能解析参数
 		if (file == null) {
-			this.addError("errmsg", res.format("error.has.error",  res.get("file.upload")));
+			this.addError("errmsg", res.format("error.empty",  res.get("file.upload")));
 			return;
 		}
-		
+		//验证参数
 		validateToken("addToken", "errmsg",  res.get("common.token.error"));
 		validateString("doc.doc_name", 1, 100, "errmsg", 
 				res.format("error.length.range", res.get("doc.name"), 1, 100));
