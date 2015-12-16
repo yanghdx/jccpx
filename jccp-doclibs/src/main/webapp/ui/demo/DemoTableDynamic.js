@@ -31,7 +31,7 @@
 
 		// Init the demo DataTables
 		this._createDataTable1();
-		this._createDataTable2();
+		//this._createDataTable2();
 	};
 
 	p._createDataTable1 = function() {
@@ -39,18 +39,38 @@
 			"dom": 'lCfrtip',
 			"order": [],
 			"colVis": {
-				"buttonText": "Columns",
+				"buttonText": "列过滤",
 				"overlayFade": 0,
 				"align": "right"
 			},
 			"language": {
-				"lengthMenu": '_MENU_ entries per page',
+				"lengthMenu": '每页 _MENU_ 条',
+	            "zeroRecords": "无数据",
+	            "info": "共 _MAX_ 条记录，当前第 _PAGE_ 页，共 _PAGES_ 页",
+	            "infoEmpty": "无数据",
+	            "infoFiltered": "(从  _MAX_ 条记录中筛选)",
 				"search": '<i class="fa fa-search"></i>',
 				"paginate": {
 					"previous": '<i class="fa fa-angle-left"></i>',
 					"next": '<i class="fa fa-angle-right"></i>'
 				}
-			}
+			},
+			"ajax" : {
+				"url" : "/doc/page",
+				"data": function(d) {
+					d.menu_id = $("#hdn_menu_id").val();
+					d.doc_type_id = $("#hdn_doc_type_id").val();
+				}
+			},
+			"processing" : true,
+			"serverSide" : true,
+			"columns" : [
+				{"data" : "doc_name"},
+				{"data" : "doc_path"},
+				{"data" : "menu_id"},
+				{"data" : "type_id"},
+				{"data" : "upload_time"}
+			]
 		});
 
 		$('#datatable1 tbody').on('click', 'tr', function() {

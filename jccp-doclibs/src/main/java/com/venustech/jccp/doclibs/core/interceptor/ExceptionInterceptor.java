@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
+import com.jfinal.core.ActionException;
 import com.jfinal.core.Controller;
 import com.jfinal.i18n.I18n;
 import com.jfinal.i18n.Res;
@@ -73,11 +74,9 @@ public class ExceptionInterceptor implements Interceptor {
 			return res.get("error.io");
 		} else if (ex instanceof ArithmeticException) {
 			return res.get("error.calc");
-		} 
-		//else if (ex instanceof MaxUploadSizeExceededException) {
-		//	errmsg = "上传文件大小超过限制";
-		//} 
-		else if (ex instanceof FileNotFoundException ) {
+		} else if (ex instanceof ActionException) {
+			return res.get("error.para");
+		} else if (ex instanceof FileNotFoundException ) {
 			return res.get("error.file.not.found");
 		} else if (ex instanceof ArrayIndexOutOfBoundsException ) {
 			return res.get("error.index");

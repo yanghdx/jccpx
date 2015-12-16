@@ -23,6 +23,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.druid.DruidStatViewHandler;
 import com.jfinal.plugin.druid.IDruidStatViewAuth;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.jfinal.render.FreeMarkerRender;
 import com.jfinal.render.ViewType;
 import com.venustech.jccp.doclibs.controller.AdminController;
 import com.venustech.jccp.doclibs.controller.DocController;
@@ -52,14 +53,15 @@ public class WebConfig extends JFinalConfig {
 	
 	@Override
 	public void afterJFinalStart() {
-		logger.info("Web is started...");
-		String root = PathKit.getWebRootPath();
-		logger.info("Web root path is " + root);
+		logger.info("WebApp is started...");
+		logger.info("WebRootPath is: " + PathKit.getWebRootPath());
+		//freemarker config
+		FreeMarkerRender.getConfiguration().setClassicCompatible(true);
 	}
 	
 	@Override
 	public void beforeJFinalStop() {
-		logger.info("Web will stop...");
+		logger.info("WebApp will stop...");
 	}
 	
 	@Override
@@ -76,7 +78,7 @@ public class WebConfig extends JFinalConfig {
 		me.setUploadedFileSaveDirectory(PathKit.getWebRootPath() + File.separator + WebConst.Upload.PATH);
 		me.setMaxPostSize(WebConst.Upload.FILE_MAX_SIZE);
 		me.setI18nDefaultLocale(pro.get("language"));
-		
+
 	}
 
 	@Override
@@ -95,9 +97,10 @@ public class WebConfig extends JFinalConfig {
 
 	@Override
 	public void configInterceptor(Interceptors me) {
+		me.addGlobalActionInterceptor(new ExceptionInterceptor());
 		me.add(new I18nInterceptor());
 		me.add(new AuthInterceptor());
-		me.add(new ExceptionInterceptor());
+		
 	}
 
 	@Override

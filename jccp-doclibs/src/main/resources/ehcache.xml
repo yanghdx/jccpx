@@ -43,4 +43,13 @@
            timeToLiveSeconds="0">
     </cache>
     
+    <!-- docs -->
+    <cache
+           name="docs"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="20"
+           timeToLiveSeconds="60">
+    </cache>
 </ehcache>

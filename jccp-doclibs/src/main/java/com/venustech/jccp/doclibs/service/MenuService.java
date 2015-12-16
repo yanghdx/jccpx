@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 import com.venustech.jccp.doclibs.core.WebConst;
 import com.venustech.jccp.doclibs.model.Menu;
 import com.venustech.jccp.doclibs.vo.MenuBean;
@@ -20,6 +21,10 @@ public class MenuService {
 		return Menu.me.find("select * from menu m where m.menu_type=? order by menu_order asc", menuType);
 	}
 	
+	public Menu getById(int menuId) {
+		return Menu.me.findFirstByCache(WebConst.CacheKey.MENUS, "menu-" + menuId, 
+				"select * from menu where id="+menuId);
+	}
 	/**
 	 * 根据菜单、文档类型生成前台的菜单
 	 * @return
@@ -93,6 +98,32 @@ public class MenuService {
 			}
 		}
 		
+		return result;
+	}
+	
+	
+	/**
+	 * @return
+	 */
+	public List<MenuBean> loadMenusByCache() {
+		List<MenuBean> result = CacheKit.get(WebConst.CacheKey.MENUS, "menuList");
+		if (result == null) {
+			result = this.loadMenus();
+			CacheKit.put(WebConst.CacheKey.MENUS, "menuList", result);
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * @return
+	 */
+	public List<MenuBean> loadAdminMenusByCache() {
+		List<MenuBean> result = CacheKit.get(WebConst.CacheKey.MENUS, "adminMenuList");
+		if (result == null) {
+			result = this.loadAdminMenus();
+			CacheKit.put(WebConst.CacheKey.MENUS, "adminMenuList", result);
+		}
 		return result;
 	}
 }

@@ -45,6 +45,7 @@ public interface WebConst {
 		String ONLINE_USERS = "onlineUsers";
 		String USERS        = "users";
 		String MENUS        = "menus";
+		String DOCS         = "docs";
 	}
 	
 	interface Upload {
