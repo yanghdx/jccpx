@@ -14,7 +14,7 @@
            timeToLiveSeconds="60">
     </defaultCache>
 
-	<!-- online cache -->
+	<!-- online user cache -->
     <cache
     	   name="onlineUsers"
            maxEntriesLocalHeap="1000"
@@ -23,7 +23,7 @@
            timeToIdleSeconds="1800"
            timeToLiveSeconds="1800">
     </cache>
-    
+    <!-- 用户列表cache -->
     <cache
     	   name="users"
            maxEntriesLocalHeap="1000"
@@ -32,14 +32,15 @@
            timeToIdleSeconds="1800"
            timeToLiveSeconds="1800">
     </cache>
-    <!-- menu永不过期 -->
+    
+    <!-- menu cache（永不过期） -->
     <cache
     	   name="menus"
-           maxEntriesLocalHeap="20"
+           maxEntriesLocalHeap="100"
            eternal="true"
            overflowToDisk="true"
-           timeToIdleSeconds="1800"
-           timeToLiveSeconds="1800">
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0">
     </cache>
     
 </ehcache>
