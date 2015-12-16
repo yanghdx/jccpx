@@ -44,23 +44,6 @@
 							
 						</form>
 					</div>
-					<!--end .col -->
-					<div class="col-sm-5 col-sm-offset-1 text-center" style="display:none;">
-						<br> <br>
-						<h3 class="text-light">No account yet?</h3>
-						<a class="btn btn-block btn-raised btn-primary" href="#">Sign
-							up here</a> <br> <br>
-						<h3 class="text-light">or</h3>
-						<p>
-							<a href="#" class="btn btn-block btn-raised btn-info"><i
-								class="fa fa-facebook pull-left"></i>Login with Facebook</a>
-						</p>
-						<p>
-							<a href="#" class="btn btn-block btn-raised btn-info"><i
-								class="fa fa-twitter pull-left"></i>Login with Twitter</a>
-						</p>
-					</div>
-					<!--end .col -->
 				</div>
 				<!--end .row -->
 			</div>
@@ -83,6 +66,14 @@
 		if (msg) {
 			alert(msg);
 		}
+		$("#username").focus();
+		
+		document.onkeydown = function(e){ 
+		    var ev = document.all ? window.event : e;
+		    if (ev.keyCode==13) {
+				$('#submit-btn').click();
+			}
+		};
 	});
 	$("#submit-btn").click(function() {
 			var user = $.trim($("#username").val());
