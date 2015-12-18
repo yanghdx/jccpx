@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1
-Source Server Version : 50624
+Source Server         : local
+Source Server Version : 50522
 Source Host           : localhost:3306
 Source Database       : jccp_doclibs
 
 Target Server Type    : MYSQL
-Target Server Version : 50624
+Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2015-12-14 23:14:10
+Date: 2015-12-18 17:58:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,12 +46,16 @@ CREATE TABLE `doc` (
   `menu_id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
   `tag_ids` varchar(100) DEFAULT NULL,
+  `download_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of doc
 -- ----------------------------
+INSERT INTO `doc` VALUES ('1', 'jccp_doclibs.sql', 'jccp_doclibs.sql', '1450429236', '1', '1', '1', null, '6');
+INSERT INTO `doc` VALUES ('2', 'merge-evt.rar', 'merge-evt.rar', '1450430329', '1', '1', '1', null, '2');
+INSERT INTO `doc` VALUES ('3', 'jccp_doclibs.sql', 'jccp_doclibs1.sql', '1450430338', '1', '1', '1', null, '1');
 
 -- ----------------------------
 -- Table structure for doc_tag

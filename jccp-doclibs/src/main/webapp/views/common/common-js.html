@@ -1,16 +1,40 @@
-<!-- COMMON JS BEGIN -->
-	<script src="/jquery/jquery-1.11.2.min.js"></script>
-	<script src="/ui/js/jquery-migrate-1.2.1.min.js"></script>
-	<script src="/ui/js/bootstrap.min.js"></script>
-	<script src="/ui/js/jquery.nanoscroller.min.js"></script>
-	<script src="/ui/js/jquery.autosize.min.js"></script>
-	<script src="/ui/js/spin.min.js"></script>
-	<!-- Put App.js last in your javascript imports -->
-	<script src="/ui/js/App.js"></script>
-	<script src="/ui/js/AppNavigation.js"></script>
-	<script src="/ui/js/AppOffcanvas.js"></script>
-	<script src="/ui/js/AppCard.js"></script>
-	<script src="/ui/js/AppForm.js"></script>
-	<script src="/ui/js/AppNavSearch.js"></script>
-	<script src="/ui/js/AppVendor.js"></script>
-<!-- COMMON JS END -->
+<!-- COMMON JAVASCRIPT BEGIN -->
+<script src="/jquery/jquery-1.11.2.min.js"></script>
+<script src="/ui/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/ui/js/bootstrap.min.js"></script>
+<script src="/ui/js/jquery.nanoscroller.min.js"></script>
+<script src="/ui/js/jquery.autosize.min.js"></script>
+<script src="/ui/js/spin.min.js"></script>
+<!-- APP JAVASCRIPT -->
+<script src="/ui/js/App.js"></script>
+<script src="/ui/js/AppNavigation.js"></script>
+<script src="/ui/js/AppOffcanvas.js"></script>
+<script src="/ui/js/AppCard.js"></script>
+<script src="/ui/js/AppForm.js"></script>
+<script src="/ui/js/AppNavSearch.js"></script>
+<script src="/ui/js/AppVendor.js"></script>
+<!-- COMMON JAVASCRIPT END -->
+<script>
+//扩展jquery
+(function ($) {
+        $.getUrlPara = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) 
+            	return unescape(r[2]); 
+            return null;
+        };
+        $.showMsg = function(id, msg, level) {
+        	if (!id || !msg) return;
+        	if (!level) level = 'danger';
+        	if ($("#" + id).length)
+        		$("#" + id).html('<div class="alert alert-' + level + '" role="alert">' + msg + '</div>');
+        };
+        $.showError = function(id, msg) {
+        	$.showMsg(id, msg, 'danger');
+        };
+        $.showSuccess = function(id, msg) {
+        	$.showMsg(id, msg, 'success');
+        };
+})(jQuery);
+</script>

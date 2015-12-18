@@ -5,11 +5,12 @@
 	href="/ui/libs/dataTables/extcss/dataTables.colVis.css?1423553990" />
 <link type="text/css" rel="stylesheet"
 	href="/ui/libs/dataTables/extcss/dataTables.tableTools.css?1423553990" />
-</@layout_head> <@layout_body>
+</@layout_head> 
+<@layout_body>
 
 <section class="style-default-bright">
 	<div class="section-header">
-		<h2 class="text-primary">${menu.menu_name}&nbsp;&gt;&nbsp;${docType.type_name}</h2>
+		<h4 class="text-primary">${menu.menu_name}&nbsp;&gt;&nbsp;${docType.type_name}</h4>
 	</div>
 	<div class="section-body">
 		<div class="row">
@@ -20,11 +21,11 @@
 					<table id="datatable1" class="table table-striped table-hover">
 						<thead>
 							<tr>
-								<th><strong>名称</strong></th>
+								<th><strong>文档名称</strong></th>
 								<th><strong>文件名</strong></th>
 								<th><strong>文档分类</strong></th>
-								<th><strong>文档类型</strong></th>
 								<th><strong>上传时间</strong></th>
+								<th><strong>下载次数</strong></th>
 							</tr>
 						</thead>
 					</table>
@@ -38,12 +39,66 @@
 
 </section>
 
-</@layout_body> <@layout_js>
+</@layout_body> 
+<@layout_js>
 
 <script src="/ui/libs/dataTables/jquery.dataTables.min.js"></script>
 <script src="/ui/libs/dataTables/ColVis/js/dataTables.colVis.min.js"></script>
-<script
-	src="/ui/libs/dataTables/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/ui/libs/dataTables/TableTools/js/dataTables.tableTools.min.js"></script>
 <script src="/ui/demo/Demo.js"></script>
-<script src="/ui/demo/DemoTableDynamic.js"></script>
+<script>
+function initTable() {
+	$('#datatable1').DataTable({
+		"dom": 'lCfrtip',
+		"ordering": false,
+		"order": [],
+		"colVis": {
+			"buttonText": "列过滤",
+			"overlayFade": 0,
+			"align": "right"
+		},
+		"language": {
+			"lengthMenu": '每页 _MENU_ 条',
+            "zeroRecords": "无数据",
+            "info": "共 _PAGES_ 页，_MAX_ 条记录",
+            "infoEmpty": "无数据",
+            "infoFiltered": "(从  _MAX_ 条记录中筛选)",
+			"search": '<i class="fa fa-search"></i>',
+			"paginate": {
+				"previous": '<i class="fa fa-angle-left"></i>',
+				"next": '<i class="fa fa-angle-right"></i>'
+			}
+		},
+		"ajax" : {
+			"url" : "/doc/page",
+			"data": function(d) {
+				d.menu_id = $("#hdn_menu_id").val();
+				d.doc_type_id = $("#hdn_doc_type_id").val();
+			}
+		},
+		"processing" : true,
+		"serverSide" : true,
+		"columns" : [
+			{"data" : "doc_name"},
+			{"data" : "doc_path", "render" : function(data, type, row, meta) {
+				return '<a href="/doc/download/' + row.id + '" target="_blank">' + data + '</a>';
+			}},
+			{"data" : "type_name"},
+			{"data" : "upload_time", "render" : function(data, type, row, meta) {
+				var date = new Date(data * 1000);
+				return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() 
+						+ " " + date.getHours() + ":" + date.getMinutes();
+			}},
+			{"data" : "download_count"}
+		]
+	});
+
+	$('#datatable1 tbody').on('click', 'tr', function() {
+		$(this).toggleClass('selected');
+	});
+}
+$(function(){
+	initTable();
+});
+</script>
 </@layout_js>

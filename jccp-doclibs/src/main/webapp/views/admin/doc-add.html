@@ -1,4 +1,5 @@
-<#include "/views/common/layout.html" /> <@layout_head> </@layout_head>
+<#include "/views/common/layout.html" /> 
+<@layout_head></@layout_head>
 
 <@layout_body>
 <section>
@@ -11,16 +12,18 @@
 
 		<div class="card">
 			<div class="card-body">
-				<#if errmsg?? && errmsg != "">
-				<div class="alert alert-danger" role="alert">
-					${errmsg}
+				<div id="errorMessage">
+					<#if errmsg?? && errmsg != "">
+						<div class="alert alert-danger" role="alert">
+							${errmsg}
+						</div>
+					</#if>
+					<#if succmsg?? && succmsg != "">
+						<div class="alert alert-success" role="alert">
+							${succmsg}
+						</div>
+					</#if>
 				</div>
-				</#if>
-				<#if succmsg?? && succmsg != "">
-				<div class="alert alert-danger" role="alert">
-					${succmsg}
-				</div>
-				</#if>
 				<form class="form-horizontal" role="form" method="post" 
 						action="/admin/doDocAdd" enctype="multipart/form-data">
 					<input type="hidden" value="${addToken}" name="addToken" id="addToken">
@@ -102,6 +105,28 @@
 </@layout_body> 
 <@layout_js> 
 <script>
+$(function(){
+	//alert($.getUrlPara('result'));
+	if ($.getUrlPara('result') == 'success') {
+		$.showSuccess('errorMessage', '上传文档成功');
+	}
+});
+/**
+ * 选择文件事件
+ */
+$("#docFile").on("blur", function(){
+	if (this.value =="")
+		return;
+	if (this.value.lastIndexOf(".") <= 0) {
+		showError("errorMessage", "文件格式错误");
+		return;
+	}
+	var pos = this.value.lastIndexOf("\\");
+	var fileName = pos >= 0 ? this.value.substring(pos+1) : this.value;
+	if ($.trim($("#doc\\.doc_name").val()) == '') {
+		$("#doc\\.doc_name").val(fileName);
+	}
+});
 /**
  * 选择文档分类
  */

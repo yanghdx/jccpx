@@ -15,17 +15,18 @@ public class DataTableHelper {
 	
 	/**
 	 * 转化为DataTable需要的格式
+	 * @draw dataTable的绘制次数
 	 * @param page
 	 * @return
 	 */
-	public static Map<String, Object> toMap(Page<?> page) {
-		Map<String, Object> json = new HashMap<String, Object>();
+	public static Map<String, Object> toMap(int draw, Page<?> page) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		if (page != null) {
-			json.put("draw", page.getPageNumber());
-			json.put("recordsTotal", page.getTotalRow());
-			json.put("recordsFiltered", page.getTotalRow());
-			json.put("data", page.getList());
+			map.put("draw", draw);
+			map.put("recordsTotal", page.getTotalRow());
+			map.put("recordsFiltered", page.getTotalRow());
+			map.put("data", page.getList());
 		}
-		return json;
+		return map;
 	}
 }

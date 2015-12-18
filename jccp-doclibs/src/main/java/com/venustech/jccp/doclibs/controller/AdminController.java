@@ -67,7 +67,7 @@ public class AdminController extends Controller {
 			.set("visible", 1);
 		boolean result = docService.save(doc);
 		if (result) {
-			redirect("/admin/docAdd");
+			redirect("/admin/docAdd?result=success");
 		} else {
 			setAttr("errmsg", I18n.use().get("admin.add.doc.error"));
 			render("doc-add.html");
