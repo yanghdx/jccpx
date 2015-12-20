@@ -22,10 +22,11 @@
 						<thead>
 							<tr>
 								<th><strong>文档名称</strong></th>
-								<th><strong>文件名</strong></th>
-								<th><strong>文档分类</strong></th>
+								<th><strong>文件</strong></th>
+								<th><strong>分类</strong></th>
 								<th><strong>上传时间</strong></th>
 								<th><strong>下载次数</strong></th>
+								<th><strong>操作</strong></th>
 							</tr>
 						</thead>
 					</table>
@@ -49,11 +50,11 @@
 <script>
 function initTable() {
 	$('#datatable1').DataTable({
-		"dom": 'lCfrtip',
+		"dom": 'lCrtip',
 		"ordering": false,
 		"order": [],
 		"colVis": {
-			"buttonText": "列过滤",
+			"buttonText": "自定义",
 			"overlayFade": 0,
 			"align": "right"
 		},
@@ -80,16 +81,25 @@ function initTable() {
 		"serverSide" : true,
 		"columns" : [
 			{"data" : "doc_name"},
-			{"data" : "doc_path", "render" : function(data, type, row, meta) {
-				return '<a href="/doc/download/' + row.id + '" target="_blank">' + data + '</a>';
-			}},
+			{"data" : "doc_path"},
 			{"data" : "type_name"},
 			{"data" : "upload_time", "render" : function(data, type, row, meta) {
 				var date = new Date(data * 1000);
 				return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() 
 						+ " " + date.getHours() + ":" + date.getMinutes();
 			}},
-			{"data" : "download_count"}
+			{"data" : "download_count"},
+			{"render" : function(data, type, row, meta) {
+				var result = '<a href="/doc/download/' + row.id + '" target="_blank">' +
+						'<span class="glyphicon glyphicon-download"  title="下载"></span></a>' + '&nbsp;&nbsp;';
+				var file = row.doc_path;
+				if (file.length > 4 && file.substring(file.length-4).toUpperCase() == '.PDF') {
+					result += '<a href="/doc/view/' + row.id + '" target="_blank">' +
+						'<span class="glyphicon glyphicon-file"  title="预览"></span></a>';
+				}
+				return result;
+				
+			}}
 		]
 	});
 

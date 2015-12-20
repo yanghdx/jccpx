@@ -59,4 +59,35 @@ public class DocController extends Controller {
 		renderText(I18n.use().get("error.file.not.found"));
 		
 	}
+	
+	public void view() {
+		Doc doc = docService.getById(getParaToInt());
+		if (doc != null) {
+			String filePath = PathKit.getWebRootPath() + 
+					File.separator + WebConst.Upload.PATH + File.separator + doc.getStr("doc_path");
+			if (!filePath.toLowerCase().endsWith(".pdf")) {
+				renderText(I18n.use().get("error.file.not.pdf"));
+				return;
+			} else {
+				File file = new File(filePath);
+				if (file.exists() && file.isFile()) {
+					setAttr("fileName", doc.getStr("doc_name"));
+					setAttr("path", "/" + WebConst.Upload.PATH + "/" + doc.getStr("doc_path"));
+					render("doc-view.html");
+					return;
+				} 
+			}
+			
+		} 
+		renderText(I18n.use().get("error.file.not.found"));
+		
+	}
+	
+//	private void viewWord(String filePath) {
+//		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(filePath));
+//		String bodyText = null;
+//		WordExtractor ex = new WordExtractor(bis);
+//		bodyText = ex.getText();
+//		getResponse().getWriter().write(bodyText);
+//	}
 }

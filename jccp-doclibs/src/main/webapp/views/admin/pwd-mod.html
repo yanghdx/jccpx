@@ -1,0 +1,100 @@
+<#include "/views/common/layout.html" /> 
+<@layout_head></@layout_head>
+
+<@layout_body>
+<section>
+	<div class="section-header">
+		<ol class="breadcrumb">
+			<li class="active">修改密码</li>
+		</ol>
+	</div>
+	<div class="section-body contain-lg">
+
+		<div class="card">
+			<div class="card-body">
+				<div id="errorMessage">
+					<#if errmsg?? && errmsg != "">
+						<div class="alert alert-danger" role="alert">
+							${errmsg}
+						</div>
+					</#if>
+				</div>
+				<form class="form-horizontal" role="form" method="post">
+					<div class="form-group">
+						<label for="oldPass" class="col-sm-2 control-label">原始密码</label>
+						<div class="col-sm-10">
+							<input type="password" class="form-control" id="oldPass" name="oldPass">
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="newPass" class="col-sm-2 control-label">新密码</label>
+						<div class="col-sm-10">
+							<input type="password" class="form-control" id="newPass" name="newPass">
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="rNewPass" class="col-sm-2 control-label">重复新密码</label>
+						<div class="col-sm-10">
+							<input type="password" class="form-control" id="rNewPass" name="rNewPass">
+							<div class="form-control-line"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="" class="col-sm-2 control-label"></label>
+						<div class="col-sm-10">
+							<button type="button" class="btn ink-reaction btn-primary" id="submit_btn">提交</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<form action="/admin/doPwdMod" method="post" id="hdn_form">
+				<input type="hidden" id="modToken" name="modToken" value="${modToken}">
+				<input type="hidden" id="user" value="${_username}">
+				<input type="hidden" id="oldPwd" name="oldPwd">
+				<input type="hidden" id="newPwd" name="newPwd">
+				<input type="hidden" id="rNewPwd" name="rNewPwd">
+			</form>
+		</div>
+	</div>
+</section>
+</@layout_body> 
+<@layout_js> 
+<script src="/jquery/jquery.md5.js"></script>
+<script>
+$(function(){
+	//alert($.getUrlPara('result'));
+	if ($.getUrlPara('result') == 'success') {
+		$.showSuccess('errorMessage', '修改密码成功');
+	}
+});
+
+$("#submit_btn").on("click", function(){
+	var oldPass = $.trim($("#oldPass").val());
+	if (!oldPass) {
+		$.showError('errorMessage', '原始密码不能为空');
+		return;
+	}
+	var newPass = $.trim($("#newPass").val());
+	if (!newPass) {
+		$.showError('errorMessage', '新密码不能为空');
+		return;
+	}
+	var rNewPass = $.trim($("#rNewPass").val());
+	if (newPass != rNewPass) {
+		$.showError('errorMessage', '新密码必须一致');
+		return;
+	}
+	//set hidden
+	var user = $("#user").val();
+	var oldPwd = $.md5($.md5($.md5(oldPass) + user) + $("#modToken").val());
+	$("#oldPwd").val(oldPwd);
+	var newPwd = $.md5($.md5(newPass) + user);
+	$("#newPwd").val(newPwd);
+	$("#rNewPwd").val(newPwd);
+	
+	$("#hdn_form").submit();
+});
+</script>
+</@layout_js>

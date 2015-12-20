@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>${fileName}</title>
+
+</head>
+<body>
+	<div>It appears you don't have Adobe Reader or PDF support in this web browser. </div>
+	<script src="/js/pdf/pdfobject.min.js"></script>
+	<script>
+		window.onload = function (){
+        	var myPDF = new PDFObject({ url: "${path}" }).embed();
+     	};
+	</script>
+</body>
+</html>

@@ -39,7 +39,7 @@
 			"dom": 'lCfrtip',
 			"order": [],
 			"colVis": {
-				"buttonText": "列过滤",
+				"buttonText": "筛选",
 				"overlayFade": 0,
 				"align": "right"
 			},
