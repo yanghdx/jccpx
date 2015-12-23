@@ -16,17 +16,18 @@
 		<div class="row">
 			<input type="hidden" id="hdn_menu_id" value="${menu.id}">
 			<input type="hidden" id="hdn_doc_type_id" value="${docType.id}">
+			<input type="hidden" id="kw" value="${kw}">
 			<div class="col-lg-12">
 				<div class="table-responsive">
 					<table id="datatable1" class="table table-striped table-hover">
 						<thead>
 							<tr>
-								<th><strong>文档名称</strong></th>
-								<th><strong>文件</strong></th>
-								<th><strong>分类</strong></th>
-								<th><strong>上传时间</strong></th>
-								<th><strong>下载次数</strong></th>
-								<th><strong>操作</strong></th>
+								<th>文档名称</th>
+								<th>文件</th>
+								<th>分类</th>
+								<th>上传时间</th>
+								<th>下载次数</th>
+								<th>操作</th>
 							</tr>
 						</thead>
 					</table>
@@ -48,6 +49,9 @@
 <script src="/ui/libs/dataTables/TableTools/js/dataTables.tableTools.min.js"></script>
 <script src="/ui/demo/Demo.js"></script>
 <script>
+/**
+ * 加载文档table
+ */
 function initTable() {
 	$('#datatable1').DataTable({
 		"dom": 'lCrtip',
@@ -75,6 +79,7 @@ function initTable() {
 			"data": function(d) {
 				d.menu_id = $("#hdn_menu_id").val();
 				d.doc_type_id = $("#hdn_doc_type_id").val();
+				d.kw = $("#kw").val();
 			}
 		},
 		"processing" : true,
@@ -107,7 +112,28 @@ function initTable() {
 		$(this).toggleClass('selected');
 	});
 }
+/**
+ * 选中菜单
+ */
+function showMenu() {
+	if ($("#hdn_menu_id").length) {
+		var m1 =  $("#hdn_menu_id").val();
+		if ( !$("#m_" + m1).length) {
+			return;
+		}
+		$("#m_" + m1).addClass('active expanded');
+		if ($("#hdn_doc_type_id").length) {
+			var m2 = $("#hdn_doc_type_id").val();
+			if (!$("#m_" + m1 + "_" + m2).length) {
+				return;
+			}
+			$("#m_" + m1 + "_" + m2).addClass('active expanded');
+		}
+		
+	}
+}
 $(function(){
+	showMenu();
 	initTable();
 });
 </script>

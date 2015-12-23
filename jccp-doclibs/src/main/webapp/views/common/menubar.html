@@ -21,14 +21,14 @@
 	
 					<!-- BEGIN LEVELS -->
 					<#list leftMenuList as m>
-					<li class="gui-folder"><a>
+					<li class="gui-folder" id="m_${m.menuId}"><a>
 							<div class="gui-icon">
 								<i class="fa fa-folder-open fa-fw"></i>
 							</div> <span class="title">${m.menuName}</span>
 					</a> <!--start submenu -->
 						<ul>
 							<#list m.getChildren() as c>
-							<li><a href="javascript:loadMenu(${m.menuId}, ${c.menuId}, '${c.funcUrl!}');"><span class="title">${c.menuName}</span></a></li>
+							<li id="m_${m.menuId}_${c.menuId}"><a href="javascript:loadMenu(${m.menuId}, ${c.menuId}, '${c.funcUrl!}');"><span class="title">${c.menuName}</span></a></li>
 							</#list>
 						</ul>
 					</li>

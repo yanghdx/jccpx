@@ -7,7 +7,7 @@
 
 <section>
 	<div class="section-body">
-	欢迎您，${_username}&nbsp;${_ip}。
+	欢迎您，<#if _username??>${_username}&nbsp;<#else>${_ip}</#if>。
 	</div>
 
 </section>

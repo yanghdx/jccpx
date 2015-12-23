@@ -1164,7 +1164,7 @@ a.text-success:hover {
 }
 @media (min-width: 1200px) {
   .menubar-pin #base {
-    padding-left: 240px;
+    padding-left: 200px;
   }
 }
 @media (min-width: 769px) {
@@ -1305,7 +1305,7 @@ a.text-success:hover {
 .header-nav-profile .dropdown > a {
   position: relative;
   min-height: 64px;
-  min-width: 210px;
+  min-width: 170px;
   padding: 12px;
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
@@ -1380,7 +1380,7 @@ a.text-success:hover {
     display: none;
   }
   .menubar-first.menubar-pin #header {
-    left: 240px;
+    left: 200px;
   }
 }
 @media (min-width: 769px) {
@@ -1535,7 +1535,7 @@ a.text-success:hover {
   padding: 16px;
 }
 .menubar-visible #menubar {
-  width: 240px;
+  width: 200px;
 }
 #menubar.animate {
   -webkit-transition: width 0.5s cubic-bezier(0.15, 0.99, 0.18, 1.01);
@@ -1595,7 +1595,7 @@ body:not(.menubar-first) .menubar-fixed-panel {
 }
 @media (min-width: 1200px) {
   .menubar-pin #menubar {
-    width: 240px;
+    width: 200px;
   }
   .menubar-pin .brand-holder {
     display: table-cell;
@@ -1606,7 +1606,7 @@ body:not(.menubar-first) .menubar-fixed-panel {
 }
 @media (max-width: 768px) {
   #menubar {
-    width: 240px;
+    width: 200px;
     z-index: 1013;
     -webkit-transform: translate(-250px, 0);
     -ms-transform: translate(-250px, 0);
@@ -2414,7 +2414,7 @@ section.section-account .img-circle {
 }
 @media (min-width: 1200px) {
   .menubar-pin.full-content .section-action {
-    left: 240px;
+    left: 200px;
   }
 }
 @media (min-width: 769px) {
@@ -2454,7 +2454,7 @@ section.section-account .img-circle {
 }
 .table thead > tr > th {
   color: inherit;
-  font-weight: 500;
+  font-weight: blod;
 }
 .table-bordered {
   border-color: rgba(163, 168, 168, 0.2);
