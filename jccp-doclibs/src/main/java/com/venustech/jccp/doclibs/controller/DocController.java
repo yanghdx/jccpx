@@ -15,6 +15,7 @@ import com.venustech.jccp.doclibs.model.Doc;
 import com.venustech.jccp.doclibs.service.DocService;
 import com.venustech.jccp.doclibs.service.MenuService;
 import com.venustech.jccp.doclibs.util.DataTableHelper;
+import com.venustech.jccp.doclibs.util.HtmlKit;
 
 /**
  * 文档资料
@@ -31,12 +32,15 @@ public class DocController extends Controller {
 	public void index() {
 		setAttr("menu",    menuService.getById(getParaToInt(0,1)));
 		setAttr("docType", docService.getDocTypeById(getParaToInt(1,1)));
+		//查询关键字
+		String kw = HtmlKit.encode(getPara("headerSearch"));
+		setAttr("kw", kw);
 		render("doc-index.html");
 	}
 	
 	public void page() {
 		int length = getParaToInt("length", PageConst.PAGE_SIZE);
-		Page<Record> page = docService.find("", getParaToInt("menu_id",1), getParaToInt("doc_type_id",1),
+		Page<Record> page = docService.find(getPara("kw"), getParaToInt("menu_id",1), getParaToInt("doc_type_id",1),
 				getParaToInt("start", 0) / length + 1, length);
 		renderJson(DataTableHelper.toMap(getParaToInt("draw", 1), page));
 	}
