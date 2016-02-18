@@ -39,14 +39,14 @@ public class DocService {
 	public Page<Record> find(String docName, int menuId, int docTypeId, int pageNumber, int pageSize) {
 		if (StrKit.isBlank(docName)) {
 			return Db.paginate(pageNumber, pageSize, 
-					"select d.id, d.doc_name, d.doc_path, d.upload_time, d.type_id, d.tag_ids, d.download_count, dt.type_name ",
-					"from doc d, doc_type dt where d.menu_id=? and d.type_id=? and d.type_id=dt.id "
+					"select d.id, d.doc_name, d.doc_path, d.upload_time, d.type_id, d.tag_ids, d.download_count, dt.type_name,d.html_view ",
+					" from doc d, doc_type dt where d.menu_id=? and d.type_id=? and d.type_id=dt.id "
 					+ " order by upload_time desc", menuId, docTypeId);
 		}
 		else {
 			return Db.paginate(pageNumber, pageSize, 
-					"select d.id, d.doc_name, d.doc_path, d.upload_time, d.type_id, d.tag_ids, d.download_count, dt.type_name ",
-					"from doc d, doc_type dt where d.menu_id=? and d.type_id=? and d.type_id=dt.id and d.doc_name like ? "
+					"select d.id, d.doc_name, d.doc_path, d.upload_time, d.type_id, d.tag_ids, d.download_count, dt.type_name,d.html_view ",
+					" from doc d, doc_type dt where d.menu_id=? and d.type_id=? and d.type_id=dt.id and d.doc_name like ? "
 					+ " order by upload_time desc", menuId, docTypeId, "%" + docName + "%");
 		}
 	}

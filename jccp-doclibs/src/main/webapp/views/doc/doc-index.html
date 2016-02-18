@@ -102,6 +102,12 @@ function initTable() {
 					result += '<a href="/doc/view/' + row.id + '" target="_blank">' +
 						'<span class="glyphicon glyphicon-file"  title="预览"></span></a>';
 				}
+				if (file.length > 4 && file.substring(file.length-4).toUpperCase() == '.ZIP') {
+					if (row.html_view == '1') {
+						result += '<a href="/upload/' + file.substring(0, file.length-4) + '/index.html" target="_blank">' +
+							'<span class="glyphicon glyphicon-file"  title="预览"></span></a>';
+					}
+				}
 				return result;
 				
 			}}

@@ -66,5 +66,15 @@
   		<artifactId>poi</artifactId>
   		<version>3.13</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.apache.ant</groupId>
+  		<artifactId>ant</artifactId>
+  		<version>1.8.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.github.junrar</groupId>
+  		<artifactId>junrar</artifactId>
+  		<version>0.7</version>
+  	</dependency>
   </dependencies>
 </project>

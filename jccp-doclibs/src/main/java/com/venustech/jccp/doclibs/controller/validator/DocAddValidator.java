@@ -40,9 +40,7 @@ public class DocAddValidator extends Validator {
 		validateToken("addToken", "errmsg",  res.get("common.token.error"));
 		validateString("doc.doc_name", 1, 100, "errmsg", 
 				res.format("error.length.range", res.get("doc.name"), 1, 100));
-		validateInteger("doc.menu_id", "errmsg", 
-				res.format("error.has.error", res.get("doc.type")));
-		validateInteger("doc.type_id", "errmsg",
+		validateRegex("type", "[0-9]+-[0-9]+", false, "errmsg", 
 				res.format("error.has.error", res.get("doc.type")));
 		
 	}
