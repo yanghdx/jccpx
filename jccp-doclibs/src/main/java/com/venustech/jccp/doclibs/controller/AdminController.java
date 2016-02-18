@@ -52,7 +52,13 @@ public class AdminController extends Controller {
 	 * admin查看doc列表s
 	 */
 	public void docs() {
-		
+		setAttr("menus", CacheKit.get(WebConst.CacheKey.MENUS, "menuList", new IDataLoader() {
+			public Object load() {
+				//加载普通menu
+				return (new MenuService()).loadMenus();
+			}
+		}));
+		render("admin-docs.html");
 	}
 	
 	/**
@@ -159,5 +165,22 @@ public class AdminController extends Controller {
 		String uploadPath = PathKit.getWebRootPath() + File.separator + WebConst.Upload.PATH + File.separator;
 		String zipFilePath = uploadPath + fileName;
 		ZipUtil.unZip(zipFilePath, uploadPath);
+	}
+	
+	
+	public void delDoc() {
+		int docId = getParaToInt();
+		Doc doc = docService.getById(docId);
+		if (doc != null) {
+			String docPath = PathKit.getWebRootPath() + 
+					File.separator + WebConst.Upload.PATH + 
+					File.separator + doc.getStr("doc_path");
+			File file = new File(docPath);
+			if (file.exists()) {
+				file.delete();
+			}
+			docService.deleteById(docId);
+		}
+		redirect("/admin/docs");
 	}
 }
