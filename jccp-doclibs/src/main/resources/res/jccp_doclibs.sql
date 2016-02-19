@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2015-12-18 17:58:48
+Date: 2016-02-19 17:40:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,15 +47,13 @@ CREATE TABLE `doc` (
   `type_id` int(11) NOT NULL,
   `tag_ids` varchar(100) DEFAULT NULL,
   `download_count` int(11) NOT NULL DEFAULT '0',
+  `html_view` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of doc
 -- ----------------------------
-INSERT INTO `doc` VALUES ('1', 'jccp_doclibs.sql', 'jccp_doclibs.sql', '1450429236', '1', '1', '1', null, '6');
-INSERT INTO `doc` VALUES ('2', 'merge-evt.rar', 'merge-evt.rar', '1450430329', '1', '1', '1', null, '2');
-INSERT INTO `doc` VALUES ('3', 'jccp_doclibs.sql', 'jccp_doclibs1.sql', '1450430338', '1', '1', '1', null, '1');
 
 -- ----------------------------
 -- Table structure for doc_tag
@@ -87,15 +85,20 @@ CREATE TABLE `doc_type` (
   `create_time` int(11) NOT NULL DEFAULT '0',
   `type_order` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of doc_type
 -- ----------------------------
 INSERT INTO `doc_type` VALUES ('1', '培训文档', '0', '1');
 INSERT INTO `doc_type` VALUES ('2', '规范文档', '0', '2');
-INSERT INTO `doc_type` VALUES ('3', '开发技术', '0', '3');
+INSERT INTO `doc_type` VALUES ('3', '技术文档', '0', '3');
 INSERT INTO `doc_type` VALUES ('4', '开源技术', '0', '4');
+INSERT INTO `doc_type` VALUES ('5', '在线API', '0', '5');
+INSERT INTO `doc_type` VALUES ('6', '安全知识', '0', '6');
+INSERT INTO `doc_type` VALUES ('7', '常用资料', '0', '7');
+INSERT INTO `doc_type` VALUES ('8', '常用网站', '0', '8');
+INSERT INTO `doc_type` VALUES ('9', 'UI收集', '0', '9');
 
 -- ----------------------------
 -- Table structure for menu
@@ -123,6 +126,7 @@ INSERT INTO `menu` VALUES ('5', '常用资料', '5', '1', '0', '0', '');
 INSERT INTO `menu` VALUES ('6', '系统管理', '1', '1', '0', '1', '');
 INSERT INTO `menu` VALUES ('7', '上传文档', '2', '1', '6', '1', '/admin/docAdd');
 INSERT INTO `menu` VALUES ('8', '文档列表', '3', '1', '6', '1', '/admin/docs');
+INSERT INTO `menu` VALUES ('9', '菜单管理', '4', '1', '6', '1', '/admin/menus');
 
 -- ----------------------------
 -- Table structure for menu_doc_type
@@ -134,7 +138,7 @@ CREATE TABLE `menu_doc_type` (
   `type_id` int(11) NOT NULL,
   `type_order` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu_doc_type
@@ -142,12 +146,11 @@ CREATE TABLE `menu_doc_type` (
 INSERT INTO `menu_doc_type` VALUES ('1', '1', '1', '1');
 INSERT INTO `menu_doc_type` VALUES ('2', '1', '2', '2');
 INSERT INTO `menu_doc_type` VALUES ('3', '1', '3', '3');
-INSERT INTO `menu_doc_type` VALUES ('4', '2', '1', '1');
-INSERT INTO `menu_doc_type` VALUES ('5', '2', '2', '2');
-INSERT INTO `menu_doc_type` VALUES ('6', '3', '1', '1');
-INSERT INTO `menu_doc_type` VALUES ('8', '3', '2', '2');
-INSERT INTO `menu_doc_type` VALUES ('10', '4', '1', '1');
-INSERT INTO `menu_doc_type` VALUES ('12', '5', '1', '1');
+INSERT INTO `menu_doc_type` VALUES ('4', '2', '6', '1');
+INSERT INTO `menu_doc_type` VALUES ('5', '2', '8', '2');
+INSERT INTO `menu_doc_type` VALUES ('6', '3', '5', '1');
+INSERT INTO `menu_doc_type` VALUES ('10', '4', '9', '1');
+INSERT INTO `menu_doc_type` VALUES ('12', '5', '7', '1');
 
 -- ----------------------------
 -- Table structure for sys_log
