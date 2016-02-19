@@ -40,6 +40,7 @@ import com.venustech.jccp.doclibs.model.Doc;
 import com.venustech.jccp.doclibs.model.DocTag;
 import com.venustech.jccp.doclibs.model.DocType;
 import com.venustech.jccp.doclibs.model.Menu;
+import com.venustech.jccp.doclibs.model.MenuDocType;
 import com.venustech.jccp.doclibs.model.SysLog;
 
 /**
@@ -124,6 +125,7 @@ public class WebConfig extends JFinalConfig {
 		arp.addMapping("sys_log", SysLog.class);
 		arp.addMapping("admin", Admin.class);
 		arp.addMapping("menu", Menu.class);
+		arp.addMapping("menu_doc_type", MenuDocType.class);
 		
 		me.add(arp);
 		

@@ -3,11 +3,15 @@ package com.venustech.jccp.doclibs.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.venustech.jccp.doclibs.core.WebConst;
+import com.venustech.jccp.doclibs.model.DocType;
 import com.venustech.jccp.doclibs.model.Menu;
+import com.venustech.jccp.doclibs.model.MenuDocType;
 import com.venustech.jccp.doclibs.vo.MenuBean;
 
 /**
@@ -24,6 +28,23 @@ public class MenuService {
 	public Menu getById(int menuId) {
 		return Menu.me.findFirstByCache(WebConst.CacheKey.MENUS, "menu-" + menuId, 
 				"select * from menu where id="+menuId);
+	}
+	
+	public boolean add(Menu menu) {
+		return menu.save();
+	}
+	
+	public boolean update(Menu menu) {
+		return menu.update();
+	}
+	
+	public boolean deleteById(int menuId) {
+		return Db.deleteById("menu", menuId);
+	}
+	
+	public boolean hasChildren(int menuId) {
+		List<Menu> list = Menu.me.find("select * from menu m where m.parent_id="+menuId);
+		return list != null && list.size() > 0;
 	}
 	/**
 	 * 根据菜单、文档类型生成前台的菜单
@@ -125,5 +146,35 @@ public class MenuService {
 			CacheKit.put(WebConst.CacheKey.MENUS, "adminMenuList", result);
 		}
 		return result;
+	}
+	
+	public DocType getDocTypeById(int docTypeId) {
+		return DocType.me.findById(docTypeId);
+	}
+	
+	@Before(Tx.class)
+	public boolean deleteDocTypeById(int docTypeId) {
+		Db.deleteById("doc_type", docTypeId);
+		Db.update("delete from menu_doc_type where type_id="+docTypeId);
+		return true;
+	}
+	
+	public boolean updateDocType(DocType docType) {
+		return docType.update();
+	}
+	
+	public boolean addDocType(int menuId, DocType docType) {
+		//
+		docType.save();
+		//
+		String re = Db.queryStr("select max(type_order) from menu_doc_type where menu_id="+menuId);
+		
+		Integer max = re == null ? null : Integer.parseInt(re);
+		MenuDocType mdt = new MenuDocType();
+		mdt.set("menu_id", menuId);
+		mdt.set("type_id", docType.getInt("id"));
+		mdt.set("type_order", max == null ? 1 : max+1);
+		mdt.save();
+		return true;
 	}
 }

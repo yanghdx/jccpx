@@ -1,0 +1,215 @@
+<#include "/views/common/layout.html" /> 
+<@layout_head>
+<link type="text/css" rel="stylesheet" href="/ui/css/toastr.css?1423393667" />
+</@layout_head>
+
+<@layout_body>
+<section>
+	<div class="section-header">
+		<h4 class="text-primary">&nbsp;&gt;&nbsp;菜单管理</h4>
+	</div>
+	<div class="section-body">
+	<div class="card">
+	<div class="card-body">
+		<form class="form-horizontal" role="form">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">一级菜单</label>
+				<div class="col-sm-9"  style="width:300px;">
+					<select class="form-control select2-list" id="firstMenus">
+						<#list menus as m>
+							<option value="${m.menuId}">${m.menuName}</option>
+						</#list>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">二级菜单</label>
+				<div class="col-sm-9">
+					<#list menus as m>
+						<select multiple="multiple" id="secondMenus_${m.menuId}" 
+							style="width:300px;height:200px;display:${(m_index == 0)?string('','none')}">
+							<#list m.getChildren() as c>
+								<option value="${c.menuId}">${c.menuName}</option>
+							</#list>
+						</select>
+					</#list>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-9">
+					<button type="button" class="btn btn-default-bright btn-raised" id="addBtn"
+						data-toggle="modal" data-target="#addModal">新增</button>
+					<button type="button" class="btn btn-default-bright btn-raised" id="modBtn"
+						data-toggle="modal" data-target="#modModal">修改</button>
+					<button type="button" class="btn btn-default-bright btn-raised" id="delBtn"
+						data-toggle="modal" data-target="#textModal">删除</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	</div>
+	</div>
+	
+	
+</section>
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="addModal" tabindex="-1" 
+	 role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="simpleModalLabel">新增二级菜单</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">上级菜单</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="parentName" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label  for="secondMenuName" class="col-sm-3 control-label">二级菜单名称</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="secondMenuName">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelBtn">取消</button>
+				<button type="button" class="btn btn-primary" id="addSubmit">提交</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->
+
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="modModal" tabindex="-1" 
+	 role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="simpleModalLabel">修改二级菜单</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">上级菜单</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="parentName2" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label  for="oldSecondMenuName" class="col-sm-3 control-label">原名称</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="oldSecondMenuName" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label  for="secondMenuName2" class="col-sm-3 control-label">新名称</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="secondMenuName2">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelBtn2">取消</button>
+				<button type="button" class="btn btn-primary" id="modSubmit">提交</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->
+
+
+</@layout_body>
+
+<@layout_js>
+<script>
+$(function() {
+	$('#firstMenus').on('change', function(){
+		$("select[id^='secondMenus']").css({'display':'none'});
+		$("#secondMenus_"+this.value).css({'display':''});
+	});
+	
+	
+	//增、改、删三个按钮
+	$("#addBtn").on('click',function(){
+		$("#parentName").val($("#firstMenus").find("option:selected").text());
+	});
+	$("#modBtn").on('click',function(){
+		$("#parentName2").val($("#firstMenus").find("option:selected").text());
+		var sName = $("#secondMenus_"+$("#firstMenus").val()).find("option:selected").text();
+		if (sName) {
+			$("#oldSecondMenuName").val(sName);
+			$("#modSubmit").prop('disabled', false);
+		} else {
+			$("#modSubmit").prop('disabled', true);
+		}
+		
+	});
+	$("#delBtn").on('click',function(){
+		var fId = $("#firstMenus").val();
+		var sId = $("#secondMenus_"+fId).val();
+		if (!sId) {
+			alert("请选择二级菜单");
+			return;
+		}
+		$.getJSON('/admin/delDocType/'+sId, function(re){
+			if (re.result == 'success') {
+				$("#secondMenus_"+fId+" option:selected").remove();
+			} else {
+				alert(re.msg);
+			}
+		});
+	});
+	//提交-增加
+	$("#addSubmit").on('click', function(){
+		var name = $.trim($("#secondMenuName").val());
+		if (!name || name.length>10) {
+			alert("名称不能为空，且长度不超过10");
+			return;
+		}
+		var fId = $("#firstMenus").val();
+		$.getJSON('/admin/addDocType', {menuId:fId, 'docType.type_name':name}, function(re){
+			if (re.result == 'success') {
+				$("#secondMenus_"+fId).append("<option value='"+re.id+"'>" + name + "</option>");
+				$("#cancelBtn").click();
+			} else {
+				alert(re.msg);
+			}
+		});
+	});
+	
+	//提交-修改
+	$("#modSubmit").on('click', function(){
+		var name = $.trim($("#secondMenuName2").val());
+		if (!name || name.length>10) {
+			alert("名称不能为空，且长度不超过10");
+			return;
+		}
+		var oldName = $("#oldSecondMenuName").val();
+		if (name == oldName) {
+			$("#cancelBtn2").click();
+			return;
+		}
+		var fId = $("#firstMenus").val();
+		var sId = $("#secondMenus_"+fId).val().toString();
+		$.getJSON('/admin/modDocType', {typeId:sId, typeName:name}, function(re){
+			if (re.result == 'success') {
+				$("#secondMenus_"+fId).find("option:selected").text(name);
+				$("#cancelBtn2").click();
+			} else {
+				alert(re.msg);
+			}
+		});
+	});
+});
+</script>
+</@layout_js>

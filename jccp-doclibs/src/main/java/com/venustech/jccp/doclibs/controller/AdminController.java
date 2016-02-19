@@ -1,6 +1,8 @@
 package com.venustech.jccp.doclibs.controller;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -11,6 +13,8 @@ import com.jfinal.kit.HashKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.ehcache.CacheKit;
+import com.jfinal.plugin.ehcache.CacheName;
+import com.jfinal.plugin.ehcache.EvictInterceptor;
 import com.jfinal.plugin.ehcache.IDataLoader;
 import com.jfinal.upload.UploadFile;
 import com.venustech.jccp.doclibs.controller.interceptor.AdminMenuInterceptor;
@@ -19,6 +23,7 @@ import com.venustech.jccp.doclibs.core.WebConst;
 import com.venustech.jccp.doclibs.core.online.OnlineUser;
 import com.venustech.jccp.doclibs.model.Admin;
 import com.venustech.jccp.doclibs.model.Doc;
+import com.venustech.jccp.doclibs.model.DocType;
 import com.venustech.jccp.doclibs.service.AdminService;
 import com.venustech.jccp.doclibs.service.DocService;
 import com.venustech.jccp.doclibs.service.MenuService;
@@ -167,7 +172,6 @@ public class AdminController extends Controller {
 		ZipUtil.unZip(zipFilePath, uploadPath);
 	}
 	
-	
 	public void delDoc() {
 		int docId = getParaToInt();
 		Doc doc = docService.getById(docId);
@@ -182,5 +186,60 @@ public class AdminController extends Controller {
 			docService.deleteById(docId);
 		}
 		redirect("/admin/docs");
+	}
+	
+	
+	
+	//menu service
+	private MenuService menuService = enhance(MenuService.class);
+	
+	public void menus() {
+		setAttr("menus", CacheKit.get(WebConst.CacheKey.MENUS, "menuList", new IDataLoader() {
+			public Object load() {
+				//加载普通menu
+				return (new MenuService()).loadMenus();
+			}
+		}));
+		render("menu-list.html");
+	}
+	
+	@Before(EvictInterceptor.class)
+	@CacheName(WebConst.CacheKey.MENUS)
+	public void addDocType() {
+		DocType docType = getModel(DocType.class);
+		menuService.addDocType(getParaToInt("menuId"), docType);
+		renderJson("{\"result\":\"success\", \"id\" : \""+docType.getInt("id")+"\"}");
+	}
+	
+	@Before(EvictInterceptor.class)
+	@CacheName(WebConst.CacheKey.MENUS)
+	public void modDocType() {
+		DocType docType = menuService.getDocTypeById(getParaToInt("typeId"));
+		docType.set("type_name", getPara("typeName"));
+		menuService.updateDocType(docType);
+		renderJson("{\"result\":\"success\"}");
+	}
+	
+	@Before(EvictInterceptor.class)
+	@CacheName(WebConst.CacheKey.MENUS)
+	public void delDocType() {
+		int docTypeId = getParaToInt();
+		menuService.deleteDocTypeById(docTypeId);
+		renderJson("{\"result\":\"success\"}");
+	}
+	
+	@Before(EvictInterceptor.class)
+	@CacheName(WebConst.CacheKey.MENUS)
+	public void delMenu() {
+		int menuId = getParaToInt();
+		Map<String, String> result = new HashMap<String, String>();
+		if (menuService.hasChildren(menuId)) {
+			result.put("result", "error");
+			result.put("msg", I18n.use().get("menu.has.children"));
+		} else {
+			menuService.deleteById(menuId);
+			result.put("result", "success");
+		}
+		renderJson(result);
 	}
 }
