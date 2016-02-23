@@ -136,7 +136,7 @@ CREATE TABLE `menu_doc_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
-  `type_order` varchar(255) NOT NULL DEFAULT '0',
+  `type_order` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 

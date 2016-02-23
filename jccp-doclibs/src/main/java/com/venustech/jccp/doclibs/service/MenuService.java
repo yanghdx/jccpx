@@ -31,6 +31,9 @@ public class MenuService {
 	}
 	
 	public boolean add(Menu menu) {
+		int menuType = menu.getInt("menu_type");
+		Integer max = Db.queryInt("select max(menu_order) from menu where menu_type="+menuType);
+		menu.set("menu_order", max == null ? 1 : max + 1);
 		return menu.save();
 	}
 	
@@ -167,9 +170,8 @@ public class MenuService {
 		//
 		docType.save();
 		//
-		String re = Db.queryStr("select max(type_order) from menu_doc_type where menu_id="+menuId);
+		Integer max = Db.queryInt("select max(type_order) from menu_doc_type where menu_id="+menuId);
 		
-		Integer max = re == null ? null : Integer.parseInt(re);
 		MenuDocType mdt = new MenuDocType();
 		mdt.set("menu_id", menuId);
 		mdt.set("type_id", docType.getInt("id"));

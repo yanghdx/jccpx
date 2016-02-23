@@ -22,9 +22,21 @@
 					</select>
 				</div>
 			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-9">
+					<button type="button" class="btn btn-default-bright btn-raised" id="addMenuBtn"
+						data-toggle="modal" data-target="#addMenuModal">新增</button>
+					<button type="button" class="btn btn-default-bright btn-raised" id="modMenuBtn"
+						data-toggle="modal" data-target="#modMenuModal">修改</button>
+					<button type="button" class="btn btn-default-bright btn-raised" id="delMenuBtn"
+						data-toggle="modal" data-target="#textModal">删除</button>
+				</div>
+			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">二级菜单</label>
-				<div class="col-sm-9">
+				<div class="col-sm-9" id="secondMenusDiv">
 					<#list menus as m>
 						<select multiple="multiple" id="secondMenus_${m.menuId}" 
 							style="width:300px;height:200px;display:${(m_index == 0)?string('','none')}">
@@ -128,6 +140,67 @@
 <!-- END SIMPLE MODAL MARKUP -->
 
 
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="addMenuModal" tabindex="-1" 
+	 role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="simpleModalLabel">新增一级菜单</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label  for="menuName" class="col-sm-3 control-label">一级菜单名称</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="menuName">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelAddMenu">取消</button>
+				<button type="button" class="btn btn-primary" id="addMenuSubmit">提交</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->
+
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="modMenuModal" tabindex="-1" 
+	 role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="simpleModalLabel">修改一级菜单</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label  for="oldSecondMenuName" class="col-sm-3 control-label">原名称</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="oldMenuName" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<label  for="secondMenuName2" class="col-sm-3 control-label">新名称</label>
+						<div class="col-sm-9" style="width:300px;">
+							<input type="text" class="form-control" id="newMenuName">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelModMenu">取消</button>
+				<button type="button" class="btn btn-primary" id="modMenuSubmit">提交</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->
 </@layout_body>
 
 <@layout_js>
@@ -159,6 +232,9 @@ $(function() {
 		var sId = $("#secondMenus_"+fId).val();
 		if (!sId) {
 			alert("请选择二级菜单");
+			return;
+		}
+		if (!window.confirm('删除后不可恢复(包含文档也不可查看)，确定删除吗？')) {
 			return;
 		}
 		$.getJSON('/admin/delDocType/'+sId, function(re){
@@ -209,6 +285,73 @@ $(function() {
 				alert(re.msg);
 			}
 		});
+	});
+	
+	//增删改一级菜单
+	$("#addMenuBtn").on('click', function(){
+		$("#menuName").val('');
+	});
+	$("#modMenuBtn").on('click', function(){
+		var id = $("#firstMenus").val();
+		var name = $("#firstMenus").find("option:selected").text();
+		$("#oldMenuName").val(name);
+		$("#newMenuName").val("");
+	});
+	$("#delMenuBtn").on('click',function(){
+		var id = $("#firstMenus").val();
+		if ($("#secondMenus_"+id).find("option").length > 0) {
+			alert("包含二级菜单，不可删除");
+			return;
+		}
+		if (!window.confirm('删除后不可恢复，确定删除吗？')) {
+			return;
+		}
+		$.getJSON('/admin/delMenu/'+id, function(re) {
+			if (re.result=='success') {
+				$("#firstMenus option:selected").remove();
+			} else {
+				alert(re.msg);
+			}
+		});
+	});
+	//增加、修改一级菜单提交动作
+	$("#addMenuSubmit").on('click', function(){
+		var name = $("#menuName").val();
+		if (!name || name.length > 15) {
+			alert("长度不能为空，不能大于15");
+			return;
+		}
+		$.getJSON("/admin/addMenu", {menuName: name}, function(re){
+			if (re.result=='success') {
+				$("#firstMenus").append("<option value='"+re.id+"'>" + name + "</option>");
+				$("#secondMenusDiv").append('<select ' +
+						'multiple="multiple" id="secondMenus_'+re.id+ 
+						'" style="width:300px;height:200px;display:none;"></select>');
+				$("#cancelAddMenu").click();
+			} else {
+				alert(re.msg);
+			}
+		})
+	});
+	$("#modMenuSubmit").on('click', function(){
+		var name = $("#newMenuName").val();
+		if (!name || name.length > 15) {
+			alert("长度不能为空，不能大于15");
+			return;
+		}
+		if (name == $("#oldMenuName").val()) {
+			$("#cancelModMenu").click();
+			return;
+		}
+		
+		$.getJSON("/admin/addMenu", {menuId:$("#firstMenus").val(),menuName: name}, function(re){
+			if (re.result=='success') {
+				$("#firstMenus option:selected").text(name);
+				$("#cancelModMenu").click();
+			} else {
+				alert(re.msg);
+			}
+		})
 	});
 });
 </script>

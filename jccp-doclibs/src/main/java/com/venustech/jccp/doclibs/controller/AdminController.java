@@ -24,6 +24,7 @@ import com.venustech.jccp.doclibs.core.online.OnlineUser;
 import com.venustech.jccp.doclibs.model.Admin;
 import com.venustech.jccp.doclibs.model.Doc;
 import com.venustech.jccp.doclibs.model.DocType;
+import com.venustech.jccp.doclibs.model.Menu;
 import com.venustech.jccp.doclibs.service.AdminService;
 import com.venustech.jccp.doclibs.service.DocService;
 import com.venustech.jccp.doclibs.service.MenuService;
@@ -225,6 +226,28 @@ public class AdminController extends Controller {
 	public void delDocType() {
 		int docTypeId = getParaToInt();
 		menuService.deleteDocTypeById(docTypeId);
+		renderJson("{\"result\":\"success\"}");
+	}
+	
+	@Before(EvictInterceptor.class)
+	@CacheName(WebConst.CacheKey.MENUS)
+	public void addMenu() {
+		Menu menu = new Menu();
+		menu.set("menu_name", getPara("menuName"))
+			.set("visible", 1)
+			.set("parent_id", 0)
+			.set("menu_type", 0)
+			.set("func_url", "");
+		menuService.add(menu);
+		renderJson("{\"result\":\"success\", \"id\":\""+menu.getInt("id")+"\"}");
+	}
+	
+	@Before(EvictInterceptor.class)
+	@CacheName(WebConst.CacheKey.MENUS)
+	public void modMenu() {
+		Menu menu = menuService.getById(getParaToInt("menuId"));
+		menu.set("menu_name", getPara("menuName"));
+		menuService.update(menu);
 		renderJson("{\"result\":\"success\"}");
 	}
 	
