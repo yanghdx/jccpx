@@ -127,6 +127,7 @@ INSERT INTO `menu` VALUES ('6', '系统管理', '1', '1', '0', '1', '');
 INSERT INTO `menu` VALUES ('7', '上传文档', '2', '1', '6', '1', '/admin/docAdd');
 INSERT INTO `menu` VALUES ('8', '文档列表', '3', '1', '6', '1', '/admin/docs');
 INSERT INTO `menu` VALUES ('9', '菜单管理', '4', '1', '6', '1', '/admin/menus');
+INSERT INTO `menu` VALUES ('10', '关于', '4', '1', '6', '1', '/admin/about');
 
 -- ----------------------------
 -- Table structure for menu_doc_type

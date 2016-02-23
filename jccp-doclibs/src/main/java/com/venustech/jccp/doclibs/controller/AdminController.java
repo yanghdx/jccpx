@@ -265,4 +265,8 @@ public class AdminController extends Controller {
 		}
 		renderJson(result);
 	}
+	
+	public void about() {
+		render("about.html");
+	}
 }
