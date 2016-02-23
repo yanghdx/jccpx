@@ -344,7 +344,7 @@ $(function() {
 			return;
 		}
 		
-		$.getJSON("/admin/addMenu", {menuId:$("#firstMenus").val(),menuName: name}, function(re){
+		$.getJSON("/admin/modMenu", {menuId:$("#firstMenus").val(),menuName: name}, function(re){
 			if (re.result=='success') {
 				$("#firstMenus option:selected").text(name);
 				$("#cancelModMenu").click();
