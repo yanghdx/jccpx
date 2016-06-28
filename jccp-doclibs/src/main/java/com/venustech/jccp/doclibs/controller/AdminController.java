@@ -19,6 +19,7 @@ import com.jfinal.plugin.ehcache.IDataLoader;
 import com.jfinal.upload.UploadFile;
 import com.venustech.jccp.doclibs.controller.interceptor.AdminMenuInterceptor;
 import com.venustech.jccp.doclibs.controller.validator.DocAddValidator;
+import com.venustech.jccp.doclibs.controller.validator.DocEditValidator;
 import com.venustech.jccp.doclibs.core.WebConst;
 import com.venustech.jccp.doclibs.core.online.OnlineUser;
 import com.venustech.jccp.doclibs.model.Admin;
@@ -82,6 +83,27 @@ public class AdminController extends Controller {
 	}
 	
 	
+	public void docEdit() {
+		int docId = getParaToInt();
+		Doc doc = docService.getById(docId);
+		if (doc == null) {
+			renderText("Doc not exist");
+			return;
+		} else {
+			createToken("editToken");
+			setAttr("menus", CacheKit.get(WebConst.CacheKey.MENUS, "menuList", new IDataLoader() {
+				public Object load() {
+					//加载普通menu
+					return (new MenuService()).loadMenus();
+				}
+			}));
+			setAttr("doc", doc);
+			render("doc-edit.html");
+		}
+		
+	}
+	
+	
 	/**
 	 * 添加doc
 	 */
@@ -123,6 +145,50 @@ public class AdminController extends Controller {
 			setAttr("errmsg", I18n.use().get("admin.add.doc.error"));
 			render("doc-add.html");
 		}
+	}
+	
+	@Before(DocEditValidator.class)
+	public void doDocEdit() {
+		String[] type = getPara("type").split("-");
+		
+		Doc doc = docService.getById(this.getParaToInt("doc.id"));
+		doc.set("doc_name", this.getPara("doc.doc_name"));
+		doc.set("menu_id", type[0]).set("type_id", type[1]);
+		
+		final UploadFile file = getFile("docFile");
+		if (file != null) {
+			String docPath = PathKit.getWebRootPath() + 
+					File.separator + WebConst.Upload.PATH + 
+					File.separator + doc.getStr("doc_path");
+			File oldFile = new File(docPath);
+			if (oldFile.exists()) {
+				oldFile.delete();
+			}
+			doc.set("doc_path", file.getFileName())
+			   .set("html_view", "on".equals(getPara("htmlview")) ? 1 : 0);
+			if (file.getFileName().toLowerCase().endsWith(".zip")) {
+				String unzip = getPara("unzip");
+				String htmlview = getPara("htmlview");
+				if ("on".equals(unzip)) {
+					final String zipFileName = file.getFileName();
+					new Thread() {
+						public void run() {
+							try {
+								long start = System.currentTimeMillis();
+								unzip(zipFileName);
+								long cost = (System.currentTimeMillis() - start)/1000;
+								LOGGER.info("Unzip [" + zipFileName + "], cost " + cost + "s!");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				}
+				System.out.println(unzip + " - " + htmlview);
+			}
+		} 
+		docService.update(doc);
+		redirect("/admin/docs");
 	}
 	
 	/**

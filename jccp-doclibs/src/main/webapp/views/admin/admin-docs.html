@@ -126,6 +126,9 @@ function initTable() {
 						'data-placement="top" data-original-title="下载" title="下载" onclick="javascript:downloadDoc('+row.id+');" >' +
 						'<i class="fa fa-download"></i></button>';
 				result += '<button type="button" class="btn btn-icon-toggle" data-toggle="tooltip" ' + 
+						'data-placement="top" data-original-title="编辑" title="编辑" onclick="javascript:editDoc('+row.id+');" >' +
+						'<i class="fa fa-pencil"></i></button>';
+				result += '<button type="button" class="btn btn-icon-toggle" data-toggle="tooltip" ' + 
 						'data-placement="top" data-original-title="删除" title="删除" onclick="javascript:delDoc('+row.id+');" >' +
 						'<i class="fa fa-trash-o"></i></button>';
 						
@@ -154,6 +157,9 @@ function initTable() {
 }
 function downloadDoc(docId) {
 	window.location.href="/doc/download/" + docId;
+}
+function editDoc(docId) {
+	window.location.href="/admin/docEdit/"+docId;
 }
 function delDoc(docId) {
 	if (window.confirm('删除后不可恢复，确定要删除吗？'))
